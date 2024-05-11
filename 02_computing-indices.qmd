@@ -1,0 +1,13 @@
+---
+title: "Computing indices of community stability"
+---
+
+1. Measured community change ("stability") through time  
+
+2. change in species presence/absence  
+
+3. or change in BC dissimilarity  
+
+4. calculated posterior means and SD values for each change metric for each site and year  
+
+5. used posterior means and standard deviation values in part 3

@@ -1,0 +1,13 @@
+---
+title: "How imperfect detection shapes community change estimates across datasets"
+---
+
+1. assessed how accounting for imperfect detection influenced estimates of community change by comparing observed and modeled estimates of dissimilarity  
+
+2. first creating observed dataset based on multiple sampling events per year  
+
+3. then created an observed dataset based on one sampling event per year  
+
+4. examined differences between observed datasets by using Bayesian hierarchical regression with change as response and data derivation crossed with dataset as predictor  
+
+5. post-hoc pairwise tests to determine direction and magnitude of differences  

@@ -7,7 +7,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Ana Miller-ter Kuile">
-<meta name="dcterms.date" content="2024-05-10">
 
 <title>Community detection tutorial</title>
 <style>
@@ -32,7 +31,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./01_description.html" rel="next">
+<link href="./01_accounting-for-imperfect-detection.html" rel="next">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -98,6 +97,9 @@ ul.task-list li input[type="checkbox"] {
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Community detection tutorial</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/an-bui/community_detection_tutorial" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+</div>
     </div>
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
@@ -113,23 +115,30 @@ ul.task-list li input[type="checkbox"] {
  <span class="menu-text">Preface</span></a>
   </div>
 </li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a href="./01_description.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Description</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+        <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./01.2_computing-indices.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Computing indices of community stability</span></span></a>
+  <a href="./01_accounting-for-imperfect-detection.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Accounting for imperfect detection</span></span></a>
   </div>
 </li>
-      </ul>
-  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02_computing-indices.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Computing indices of community stability</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03_community-stability-environment.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Evaluating community stability in relation to environmental variables</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04_imperfect-detection.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">How imperfect detection shapes community change estimates across datasets</span></span></a>
+  </div>
+</li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./references.html" class="sidebar-item-text sidebar-link">
@@ -149,6 +158,7 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#preface" id="toc-preface" class="nav-link active" data-scroll-target="#preface">Preface</a>
   <ul class="collapse">
   <li><a href="#description" id="toc-description" class="nav-link" data-scroll-target="#description">Description</a></li>
+  <li><a href="#case-studies" id="toc-case-studies" class="nav-link" data-scroll-target="#case-studies">Case studies</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -172,12 +182,6 @@ ul.task-list li input[type="checkbox"] {
           </div>
   </div>
     
-    <div>
-    <div class="quarto-title-meta-heading">Published</div>
-    <div class="quarto-title-meta-contents">
-      <p class="date">May 10, 2024</p>
-    </div>
-  </div>
   
     
   </div>
@@ -193,6 +197,10 @@ ul.task-list li input[type="checkbox"] {
 <h2 class="anchored" data-anchor-id="description">Description</h2>
 <p>This is a modeling tutorial for the supplement for Miller-ter Kuile et al.&nbsp;“Accounting for imperfect detection to reveal the importance of current and past environmental conditions for long-term community stability”. <em>in revision</em></p>
 <p>The purpose of this tutorial is to provide a detailed description of the modeling approaches used in the paper.</p>
+</section>
+<section id="case-studies" class="level2">
+<h2 class="anchored" data-anchor-id="case-studies">Case studies</h2>
+<p>[describe four datasets here]</p>
 
 
 </section>
@@ -612,8 +620,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   <div class="nav-page nav-page-previous">
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./01_description.html" class="pagination-link" aria-label="Description">
-        <span class="nav-page-text">Description</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./01_accounting-for-imperfect-detection.html" class="pagination-link" aria-label="Accounting for imperfect detection">
+        <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Accounting for imperfect detection</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

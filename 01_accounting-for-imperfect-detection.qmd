@@ -2,14 +2,7 @@
 title: "Accounting for imperfect detection"
 ---
 
-## Accounting for imperfect detection
-
 1. Accounting for imperfect detection using Bayesian multi-species model (for either count or detection/non-detection)  
 
 2. [look in supporting info for more]
 
-## Computing indices of community stability
-
-1. Measured community change ("stability") through time  
-
-2.

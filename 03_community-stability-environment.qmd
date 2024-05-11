@@ -1,0 +1,9 @@
+---
+title: "Evaluating community stability in relation to environmental variables"
+---
+
+1. compiled abiotic and biotic variables that could influence community change  
+
+2. Determine whether responses to abiotic and biotic factors are instantaneous or lagged using Bayesian regression with stochastic antecedent modeling  
+
+3. model structure 

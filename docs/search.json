@@ -20,23 +20,53 @@
     ]
   },
   {
-    "objectID": "01_description.html",
-    "href": "01_description.html",
-    "title": "Description",
-    "section": "",
-    "text": "Part 1: description",
+    "objectID": "index.html#case-studies",
+    "href": "index.html#case-studies",
+    "title": "Community detection tutorial",
+    "section": "Case studies",
+    "text": "Case studies\n[describe four datasets here]",
     "crumbs": [
-      "Description"
+      "Preface"
     ]
   },
   {
-    "objectID": "01_description.html#part-1-description",
-    "href": "01_description.html#part-1-description",
-    "title": "Description",
+    "objectID": "01_accounting-for-imperfect-detection.html",
+    "href": "01_accounting-for-imperfect-detection.html",
+    "title": "1  Accounting for imperfect detection",
     "section": "",
-    "text": "Multi-species abundance/occupancy modelling (MSAM or MSOM): observational dat with detection covariates to estimate “true” abundance or occupancy\nComputer beta diversity given species abundance or occupancy (Bray-Curtis for abundance, species turnover for presence-absence)\nRegression model using posterior estimates to examine effects of environmental variables on community change through time (allowing environmental variables to have lagged effects)",
+    "text": "Accounting for imperfect detection using Bayesian multi-species model (for either count or detection/non-detection)\n[look in supporting info for more]",
     "crumbs": [
-      "Description"
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Accounting for imperfect detection</span>"
+    ]
+  },
+  {
+    "objectID": "02_computing-indices.html",
+    "href": "02_computing-indices.html",
+    "title": "2  Computing indices of community stability",
+    "section": "",
+    "text": "Measured community change (“stability”) through time\nchange in species presence/absence\nor change in BC dissimilarity\ncalculated posterior means and SD values for each change metric for each site and year\nused posterior means and standard deviation values in part 3",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Computing indices of community stability</span>"
+    ]
+  },
+  {
+    "objectID": "03_community-stability-environment.html",
+    "href": "03_community-stability-environment.html",
+    "title": "3  Evaluating community stability in relation to environmental variables",
+    "section": "",
+    "text": "compiled abiotic and biotic variables that could influence community change\nDetermine whether responses to abiotic and biotic factors are instantaneous or lagged using Bayesian regression with stochastic antecedent modeling\nmodel structure",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Evaluating community stability in relation to environmental variables</span>"
+    ]
+  },
+  {
+    "objectID": "04_imperfect-detection.html",
+    "href": "04_imperfect-detection.html",
+    "title": "4  How imperfect detection shapes community change estimates across datasets",
+    "section": "",
+    "text": "assessed how accounting for imperfect detection influenced estimates of community change by comparing observed and modeled estimates of dissimilarity\nfirst creating observed dataset based on multiple sampling events per year\nthen created an observed dataset based on one sampling event per year\nexamined differences between observed datasets by using Bayesian hierarchical regression with change as response and data derivation crossed with dataset as predictor\npost-hoc pairwise tests to determine direction and magnitude of differences",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>How imperfect detection shapes community change estimates across datasets</span>"
     ]
   }
 ]

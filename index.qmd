@@ -6,3 +6,6 @@ This is a modeling tutorial for the supplement for Miller-ter Kuile et al. "Acco
 
 The purpose of this tutorial is to provide a detailed description of the modeling approaches used in the paper.
 
+## Case studies
+
+[describe four datasets here]
