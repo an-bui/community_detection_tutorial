@@ -1,5 +1,6 @@
 project:
   type: book
+  output-dir: docs
 
 book:
   title: "Community detection tutorial"
@@ -9,7 +10,7 @@ book:
     - index.qmd
     - part: 01_description.qmd
       chapters:
-      - 01_.qmd
+      - 01.2_computing-indices.qmd
     - references.qmd
 
 bibliography: references.bib

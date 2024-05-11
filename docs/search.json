@@ -1,0 +1,42 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Community detection tutorial",
+    "section": "",
+    "text": "Preface",
+    "crumbs": [
+      "Preface"
+    ]
+  },
+  {
+    "objectID": "index.html#description",
+    "href": "index.html#description",
+    "title": "Community detection tutorial",
+    "section": "Description",
+    "text": "Description\nThis is a modeling tutorial for the supplement for Miller-ter Kuile et al. “Accounting for imperfect detection to reveal the importance of current and past environmental conditions for long-term community stability”. in revision\nThe purpose of this tutorial is to provide a detailed description of the modeling approaches used in the paper.",
+    "crumbs": [
+      "Preface"
+    ]
+  },
+  {
+    "objectID": "01_description.html",
+    "href": "01_description.html",
+    "title": "Description",
+    "section": "",
+    "text": "Part 1: description",
+    "crumbs": [
+      "Description"
+    ]
+  },
+  {
+    "objectID": "01_description.html#part-1-description",
+    "href": "01_description.html#part-1-description",
+    "title": "Description",
+    "section": "",
+    "text": "Multi-species abundance/occupancy modelling (MSAM or MSOM): observational dat with detection covariates to estimate “true” abundance or occupancy\nComputer beta diversity given species abundance or occupancy (Bray-Curtis for abundance, species turnover for presence-absence)\nRegression model using posterior estimates to examine effects of environmental variables on community change through time (allowing environmental variables to have lagged effects)",
+    "crumbs": [
+      "Description"
+    ]
+  }
+]
