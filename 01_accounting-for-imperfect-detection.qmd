@@ -2,7 +2,411 @@
 title: "Accounting for imperfect detection"
 ---
 
-1. Accounting for imperfect detection using Bayesian multi-species model (for either count or detection/non-detection)  
+## Model Formulation
 
-2. [look in supporting info for more]
+Traditional multi-species abundance (MSAM) and occupancy (MSOM) models are built on several data requirements and assumptions:
 
+1. Sites are visited more than once within a year, so that repeat visits can be used to estimate detection probabilities.
+
+2. There is "closure" within a year at a site, which means species are neither gained or lost from a site within that year. 
+
+These models have two components, including a) a biological process linking latent "true" abundance or occupancy to an expected value or probability, which could depend on covariates and b) an observation process linking observed data to detection probability and "true" abundance or occupancy. 
+
+### Data distribution
+
+In all following mathematical descriptions and models, subscripts are as follows:
+
+- *s* : species
+- *t* : survey unit (e.g., transect, quadrat)
+- *y* : year
+- *r* : survey replicate
+
+For abundance models, observed data, $y_{s,t,y,r}$, is dependent on detection probability, $p_{s,t,y,r}$, and "true" latent abundance, $N_{s,t,y}$: 
+
+$y_{s,t,y,r} \sim Binomial(p_{s,t,y,r}, N_{s,t,y})$
+
+For occupancy models, observed data, $y_{s,t,y,r}$, is dependent on detection probability, $p_{s,t,y,r}$, and "true" latent occupancy, $z_{s,t,y}$  ($z_{s,t,y}$ = 1: presence; $z_{s,t,y}$ = 0: absence):
+
+$y_{s,t,y,r} \sim Bernoulli(p_{s,t,y,r}* z_{s,t,y})$
+
+### Biological process
+
+For abundance models, latent abundance, $N_{s,t,y}$, is dependent on a rate parameter $\lambda_{s,t,y}$:
+
+$N_{s,t,y} \sim Poisson(\lambda_{s,t,y})$
+
+Which, in our models, is dependent on a regression that includes a species-specific intercept and random effects of site within species and year within species which are made identifiable based on the post-sweeping method described in [Ogle and Barber (2020)](https://doi.org/10.1002/eap.2159):
+
+$log(\lambda_{s,t,y}) = \beta_{0s} + \epsilon_{s,t} + \gamma_{s,y}$
+
+Similarly, for occupancy models, $z_{s,t,y}$ is dependent on occupancy probability, $\psi_{s,t,y}$:
+
+$z_{s,t,y} \sim Bernoulli(psi_{s,t,y})$
+
+Which is dependent on a similar regression:
+
+$logit(\psi_{s,t,y}) = \beta_{0s} + \epsilon_{s,t} + \gamma_{s,y}$
+
+All species-level intercept values receive priors centered around community-level hyperparameters: 
+
+$\beta_{0s} \sim Normal(\mu_\beta, \sigma_\beta)$
+
+With vague or relatively uninformative priors:
+
+$\mu_\beta \sim Normal(0, 1000)$
+
+$\sigma_\beta \sim Uniform(0, 50)$
+
+
+### Observation process
+
+For both abundance and occupancy models, the observation process estimates detection probabilities, $p_{s,t,y,r}$, which can be estimated based on a regression:
+
+$logit(p_{s,t,y,r}) = \alpha_{0s} + \sum_{j=1}^{J}\alpha_jX_{j,s,t,y,r}$
+
+Where $\alpha_{0s}$ is a species-level intercept and the coefficients $\alpha_1$, $\alpha_2$... $\alpha_J$ denote the effect of each detection covariate $X_{j,s,t,y,r}$ for j = 1, 2, ... J. Each detection covariate, $X_{j,s,t,y,r}$, can depend on any combination of species, site, year, and replicate (e.g., species traits would be an $X_s$ whereas conditions during a survey might be a $X_{t,y,r}$).
+
+Again, all species-level intercept values receive priors centered around community-level hyperparameters: 
+
+$\alpha_{0s} \sim Normal(\mu_\alpha, \sigma_\alpha)$
+
+With vague or relatively uninformative priors:
+
+$\mu_\alpha \sim Normal(0, 1000)$
+
+$\sigma_\alpha \sim Uniform(0, 50)$
+
+All continous covariate effects got relatively uninformative priors
+
+$\alpha_j \sim Normal(0, 1000)$
+
+And categorical covariate effects were cell-referenced with the baseline level being that with the most observations (baseline level gets a prior value = 0, all others get uninformative normal priors similar to $alpha_j$, above).
+
+### The model translated to JAGS code
+
+Below is example JAGS code for the model specified above:
+
+```{r, eval=FALSE}
+model{
+  
+  #Example MSAM model for tutorial with simulated data
+  
+  
+  for(s in 1:n.species){ #species
+    for(t in 1:n.transects){ #transects
+      for(y in n.start[t]:n.end[t]){ #years
+        #setting these start and end years to depend on transect
+        #allows them to vary by transect
+        
+        #BIOLOGICAL MODEL 
+        
+        #expected number of individuals of species s
+        #in site t in time y is dependent on 
+        #a rate parameter, lambda, for a poisson distribution
+        N[s,t,y] ~ dpois(lambda[s,t,y])
+        
+        #this rate parameter is dependent on a regression
+        #with a species intercept,
+        #and species within site, and species within year 
+        #random effects (post-sweeping code is below for this )
+        log(lambda[s,t,y]) <- b0.species[s] + 
+          eps.site[Site.ID[t], s] +
+          eps.year[Year.ID[y], s]
+        
+        for(r in 1:n.rep[t,y]){ #for the number of surveys on each transect
+          #in each year
+          
+          # OBSERVATION MODEL
+          
+          #detection probability for species s in site t in
+          #year y in replicate r
+          logit(p[s,t,y,r]) <- a0[s] + #species-level intercept
+            #a covariate that is related to the survey 
+            #(e.g., weather, survey length)
+            #dependent on site, year, and replicate, but not species
+            a1*survey.covariate[t,y,r] #+
+          #could also add species covariates 
+          #(e.g., body size, color, call frequency)
+            #a2*species.covariate[s]
+          
+          #abundance is binomial based on detection probability
+          #and total true abundance at the site
+          y[s,t,y,r] ~ dbin(p[s,t,y,r], N[s,t,y])
+          
+          #create replicate data based on model estimation to
+          #look at goodness-of-fit (regress y.rep ~ y)
+          y.rep[s,t,y,r] ~ dbin(p[s,t,y,r], N[s,t,y])
+          
+        }
+      }
+    }
+    
+    #SPECIES-LEVEL PRIORS:
+    #Detection intercept and slopes for each species
+    #are centered on community-level hyperpriors
+    a0[s] ~ dnorm(mu.a0,tau.a0)
+    
+    #"baseline" detection at vis = 0 and size = 0 
+    #on standardized scale
+    p0[s] <- ilogit(a0[s])
+    
+    #species-level intercept - 
+    #currently non-identifiable:
+    b0.species[s] ~ dnorm(mu.b0species, tau.b0species)
+    
+    #compute the identifiable species-level intercept:
+    #TRACK THIS ONE for convergence
+    b0.star[s] <- b0.species[s] + ave.eps.site[s] + ave.eps.year[s]
+    
+  }
+  
+  #SITE W/IN SPECIES RANDOM EFFECTS
+  #sites nested within species (sites sum to zero w/in each species)
+  for(s in 1:n.species){
+    for(t in 1:n.sites){
+      #non-identifiable random effect
+      eps.site[t,s] ~ dnorm(0, tau.eps.site)
+      #identifiable site random effect (monitor this)
+      eps.site.star[t,s] <- eps.site[t,s] - ave.eps.site[s]
+    }
+    #mean site level random effects within each species
+    ave.eps.site[s] <- mean(eps.site[,s])
+  }
+  
+  #YEARS W/IN SPECIES RANDOM EFFECTS
+  #sites nested within species (sites sum to zero w/in each species)
+  for(s in 1:n.species){
+    for(y in 1:n.years){
+      #non-identifiable random effect
+      eps.year[y,s] ~ dnorm(0, tau.eps.year)
+      #identifiable year random effect (monitor this)
+      eps.year.star[y,s] <- eps.year[y,s] - ave.eps.year[s]
+    }
+    #mean year level random effects within each species
+    ave.eps.year[s] <- mean(eps.year[,s])
+  }
+  
+  #COMMUNITY HYPER PRIORS
+  #initial occupancy
+  #Detection intercept
+  mu.a0 ~ dnorm(0, 0.001)
+  tau.a0 <- pow(sig.a0, -2)
+  sig.a0 ~ dunif(0, 50)
+  
+  #species-level abundance
+  mu.b0species ~ dnorm(0, 0.001)
+  tau.b0species <- pow(sig.b0species, -2)
+  sig.b0species ~ dunif(0,50)
+  
+  #site and year variances
+  sig.eps.site ~ dunif(0, 10)
+  tau.eps.site <- pow(sig.eps.site, -2)
+  sig.eps.year ~ dunif(0, 10)
+  tau.eps.year <- pow(sig.eps.year, -2)
+  
+  #detection covariate effect priors
+  a1 ~ dnorm(0, 0.001)
+  #a2 ~ dnorm(0, 0.001)
+  
+  #IN CASE OF missing data 
+  #If detection covariate data are missing, this will
+  #impute based on mean and variance of that variable
+  for(t in 1:n.transects){
+    for(y in n.start[t]:n.end[t]){
+      for(r in 1:n.rep[t,y]){
+        
+        survey.covariate[t,y,r] ~ dnorm(mu.surveycov, tau.surveycov)
+      }
+    }
+  }
+  
+  #PRIORS FOR IMPUTING MISSING DATA
+  #Priors for mean and tau of missing covariates in the model
+  mu.surveycov ~ dunif(-10, 10)
+  sig.surveycov ~ dunif(0, 20)
+  tau.surveycov <- pow(sig.surveycov, -2)
+
+  #END MODEL
+}
+
+```
+
+
+## The model in action
+
+These models take a long time to run and we utilized cloud computing to run them on real datasets. For illustration purposes, we have simulated a dataset with a small number of species, years, and survey units to illustrate how to run the model in JAGS and R. 
+
+Our simulated dataset includes abundance data for:
+
+- **10 species** from
+- **3 transects** that come from
+- **1 site** in
+- **5 years** that all received
+- **2 surveys** within each year
+
+In this dataset, detection probability depends on a survey covariate that is different for each survey replicate at each site in each year (e.g., could be differences in survey length or weather during the survey). You can find the simulated dataset in tidy form [here]()(PATH TO DATAFRAME NEEDED). 
+
+To run the model in R and JAGS, we will need:
+
+- The model file
+- The data list
+- A script to wrap JAGS in R
+
+You can find all of these, along with the data simulation used in this tutorial, in the [FOLDER]
+
+### Running the model
+
+#### The model file
+
+You will need to provide a path to the model file (which is its own R script, written in JAGS/BUGS language, so it won't actually run in R). You can find ours [here]()(PATH TO MODEL FILE). You will see that we define the path to this model in our model running script below.
+
+#### The data list
+
+To run the model, we will need to provide JAGS with a data list, which you can find [here]()PATH.
+
+```{r, include=FALSE}
+# Load packages -----------------------------------------------------------
+
+
+package.list <- c("tidyverse", 'here') 
+
+## Installing them if they aren't already on the computer
+new.packages <- package.list[!(package.list %in% installed.packages()[,"Package"])]
+if(length(new.packages)) install.packages(new.packages)
+
+## And loading them
+for(i in package.list){library(i, character.only = T)}
+```
+
+
+```{r}
+data_list <- readRDS(here("MSAM",
+                          'data',
+                          'model_inputs',
+                          'MSAM_data_list.RDS'))
+
+str(data_list)
+```
+
+As you can see, this data list includes indexing numbers, vectors, matrices, and arrays to pass to JAGS. 
+
+#### The script to run the model
+
+We'll run the model using the `jagsUI` wrapper package. You can find this script [here]()PATH, and the general code to run a JAGS model is provided here:
+
+```{r, eval=FALSE}
+
+# Load packages -----------------------------------------------------------
+
+
+package.list <- c("tidyverse", 'here', #general packages
+                  'jagsUI', #jags wrapper
+                  'coda', #gelman.diag() function
+                  'mcmcplots') #trace plot function
+
+## Installing them if they aren't already on the computer
+new.packages <- package.list[!(package.list %in% installed.packages()[,"Package"])]
+if(length(new.packages)) install.packages(new.packages)
+
+## And loading them
+for(i in package.list){library(i, character.only = T)}
+
+# Load data -----------------------------------------------------------
+
+data_list <- readRDS(here("MSAM",
+                          'data',
+                          'model_inputs',
+                          'MSAM_data_list.RDS'))
+
+# Define model path -----------------------------------------------------------
+
+#The model file is here:
+model_file <- here("MSAM",
+                   'code',
+                   'MSAM_model.R')
+
+# Specify parameters to save -----------------------------------------------------------
+
+#These are the parameters we will want to track 
+#to assess convergence
+parameters <- c('b0.star',
+                'a0',
+                'a1',
+                'eps.site.star',
+                'eps.year.star',
+                'mu.a0',
+                'sig.a0',
+                'mu.b0species',
+                'sig.b0species',
+                'sig.eps.site',
+                'sig.eps.year')
+
+# Set initial values for model -----------------------------------------------------------
+
+#this was also generated when we simulated data - it aids in 
+#convergence when we have known values
+inits_list <- readRDS(here("MSAM",
+                           'data',
+                           "model_inputs",
+                           'MSAM_inits_list.RDS'))
+
+#IMPORTANT: You will need to set initial values for the number of 
+#individuals (N), which will keep the model from running into errors
+#when a sampled number in the distribution exceeds the maximum
+#number observed at that site
+
+#We can also set initial values for various variables 
+# with known values to get convergence faster, but these are not
+#necessary to get the model to run
+inits <- list(list(a1 = inits_list$a1,
+                   mu.a0 = inits_list$mu.a0,
+                   mu.b0species = inits_list$mu.b0species,
+                   a0 = inits_list$a0,
+                   b0.species = inits_list$b0.species,
+                   eps.site = inits_list$eps.site,
+                   eps.year = inits_list$eps.year,
+                   N = inits_list$countmax),
+              list(a1 = inits_list$a1 + 0.05,
+                   mu.a0 = inits_list$mu.a0 + 0.05,
+                   mu.b0species = inits_list$mu.b0species + 0.05,
+                   a0 = inits_list$a0 + 0.05,
+                   b0.species = inits_list$b0.species + 0.05,
+                   eps.site = inits_list$eps.site + 0.05,
+                   eps.year = inits_list$eps.year + 0.05,
+                   N = inits_list$countmax),
+              list(a1 = inits_list$a1 - 0.05,
+                   mu.a0 = inits_list$mu.a0 - 0.05,
+                   mu.b0species = inits_list$mu.b0species - 0.05,
+                   a0 = inits_list$a0 - 0.05,
+                   b0.species = inits_list$b0.species - 0.05,
+                   eps.site = inits_list$eps.site - 0.05,
+                   eps.year = inits_list$eps.year - 0.05,
+                   N = inits_list$countmax))
+
+# Run the model -----------------------------------------------------------
+
+#run the model 
+model <- jagsUI::jags(data = data_list,
+                      inits = inits,
+                      parameters.to.save = parameters,
+                      model.file = model_file,
+                      parallel = TRUE,
+                      n.chains = 3,
+                      n.iter = 1335,
+                      DIC = TRUE)
+
+# Assess convergence -----------------------------------------------------------
+
+#assess convergence with Gelman statistic
+gelman.diag(model$samples, multivariate = F)
+#generate trace plots
+mcmcplot(model$samples)
+
+```
+
+We have run this just for enough iterations to assess convergence (it likely hasn't converged) so that we can provide the model output for downstream tutorial steps. For your own datasets, you may need to keep running this model a few times for more iterations than we've shown above, resetting initial values based on new model runs to get this model to converge. For the datasets we evaluated in our manuscript, we set a convergence cutoff of >95% of all nodes converging at Gelman diagnostic ($\hat{R} \leq 1.2$).
+
+
+### Next: using N to compute indices of community stability
+
+Next up, we'll use estimates of N for each species in each site in each year to calculate an index of community stability (beta diversity)!
