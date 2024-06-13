@@ -2,10 +2,35 @@
 
 ## Description
 
-This is a modeling tutorial for the supplement for Miller-ter Kuile et al. "Accounting for imperfect detection to reveal the importance of current and past environmental conditions for long-term community stability". _in revision_  
+This is a modeling tutorial for the supplement for Miller-ter Kuile et al. "Accounting for imperfect detection to reveal the importance of current and past environmental conditions for community stability". _in revision_  
 
-The purpose of this tutorial is to provide a detailed description of the modeling approaches used in the paper.
+The purpose of this tutorial is to provide a detailed description of the modeling approaches used in the paper along with examples of the models in action on both simulated and real datasets.
 
-## Case studies
+## Tools you'll need
 
-[describe four datasets here]
+All models are Bayesian models run in R and JAGS. You will need these programs to run these models.
+
+[Download R](https://cran.rstudio.com/)
+
+(We also recommend [RStudio](https://posit.co/download/rstudio-desktop/))
+
+[Download JAGS](https://sourceforge.net/projects/mcmc-jags/files/)
+
+## Model description
+
+We employed a two-step modeling process (Figure 1). 
+
+![Figure 1: Depiction of the two-step modeling process, including A) accounting for imperfect detection using a multi-species occupancy or abundance model and B) using derived quantitites of community change along with their uncertainty in a regression examining current and past environmental drivers of change.](pictures/DAG_v2.jpg)
+
+### A) Multi-species model accounting for imperfect detection 
+
+This model links observed abundance or presence-absence of species in a community to detection probabilities to generate a latent "true" abundance or occupancy for each species in each site in each year. We used this model to then generate metrics of community change (beta diversity). We built these models based on previous model developments for accounting for imperfect detection in community datasets ([Dorazio et al. 2006](10.1890/0012-9658(2006)87[842:esraab]2.0.co;2)).
+
+### B) Regression model with environmental covariates
+
+This model incorporates mean and variance of community change metrics from the model in A) into a regression examining the effects of environmental covariates on community change. This model employs a stochastic antecedent modeling (SAM) framework ([Ogle et al. 2015](https://doi.org/10.1111/ele.12399)) to allow environmental covariates to have immediate and lagged responses. 
+
+## Outline
+
+In the following pages, we will walk you through the model formulation as well as model code demonstrating the modeling framework. 
+
