@@ -2,14 +2,14 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "Community detection tutorial",
+    "title": "Accounting for imperfect detection to understand community change: a modeling tutorial",
     "section": "",
     "text": "Preface"
   },
   {
     "objectID": "index.html#description",
     "href": "index.html#description",
-    "title": "Community detection tutorial",
+    "title": "Accounting for imperfect detection to understand community change: a modeling tutorial",
     "section": "Description",
     "text": "Description\nThis is a modeling tutorial for the supplement for Miller-ter Kuile et al. “Accounting for imperfect detection to reveal the importance of current and past environmental conditions for community stability”. in revision\nThe purpose of this tutorial is to provide a detailed description of the modeling approaches used in the paper along with examples of the models in action on both simulated and real datasets."
   },
@@ -63,21 +63,21 @@
   {
     "objectID": "index.html#tools-youll-need",
     "href": "index.html#tools-youll-need",
-    "title": "Community detection tutorial",
+    "title": "Accounting for imperfect detection to understand community change: a modeling tutorial",
     "section": "Tools you’ll need",
     "text": "Tools you’ll need\nAll models are Bayesian models run in R and JAGS. You will need these programs to run these models.\nDownload R\n(We also recommend RStudio)\nDownload JAGS"
   },
   {
     "objectID": "index.html#outline",
     "href": "index.html#outline",
-    "title": "Community detection tutorial",
+    "title": "Accounting for imperfect detection to understand community change: a modeling tutorial",
     "section": "Outline",
     "text": "Outline\nIn the following pages, we will walk you through the model formulation as well as model code demonstrating the modeling framework.\n\nAccounting for imperfect detection walks through accounting for imperfect detection in a multi-species model\nComputing indices of community stability illustrates how latent values from the models for imperfect detection can be used to calculate multiple indices of community stability (beta diversity)\nEvaluating community stability in relation to environmental variables shows how to take these derived values of community change and uncertainty around them and use them in a regression that allows covariates to have immediate and lagged effects on community change\n\n\n\n\n\nDorazio, Robert M., Andrew Royle, Bo Soderstrom, and Anders Glimskar. 2006. “Estimating Species Richness and Accumulation by Modeling Species Occurence and Detectability.” Ecology 87 (4): 842–54. https://doi.org/10.1890/0012-9658(2006)87[842:ESRAAB]2.0.CO;2.\n\n\nOgle, Kiona, Jarrett J. Barber, Greg A. Barron-Gafford, Lisa Patrick Bentley, Jessica M. Young, Travis E. Huxman, Michael E. Loik, and David T. Tissue. 2015. “Quantifying Ecological Memory in Plant and Ecosystem Processes.” Edited by Elsa Cleland. Ecology Letters 18 (3): 221–35. https://doi.org/10.1111/ele.12399."
   },
   {
     "objectID": "index.html#model-description",
     "href": "index.html#model-description",
-    "title": "Community detection tutorial",
+    "title": "Accounting for imperfect detection to understand community change: a modeling tutorial",
     "section": "Model description",
     "text": "Model description\nWe employed a two-step modeling process (Figure 1).\n\n\n\nFigure 1: Depiction of the two-step modeling process, including A) accounting for imperfect detection using a multi-species occupancy or abundance model and B) using derived quantitites of community change along with their uncertainty in a regression examining current and past environmental drivers of change.\n\n\n\nA) Multi-species model accounting for imperfect detection\nThis model links observed abundance or presence-absence of species in a community to detection probabilities to generate a latent “true” abundance or occupancy for each species in each site in each year. We used this model to then generate metrics of community change (beta diversity). We built these models based on previous model developments for accounting for imperfect detection in community datasets (Dorazio et al. 2006).\n\n\nB) Regression model with environmental covariates\nThis model incorporates mean and variance of community change metrics from the model in A) into a regression examining the effects of environmental covariates on community change. This model employs a stochastic antecedent modeling (SAM) framework (Ogle et al. 2015) to allow environmental covariates to have immediate and lagged responses."
   },
