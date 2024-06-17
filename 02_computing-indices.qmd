@@ -2,7 +2,7 @@
 title: "Computing indices of community stability"
 ---
 
-Now that we have N from our previous model, we can calculate a metric of community change through time. For this dataset, since we are working with abundance data, we will be using a common metric in community ecology - Bray-Curtis dissimilarlity. For presence-absence data, the most common metric is Jaccard dissimilarity, which generates species turnover metrics (@oksanen2020; @hallett2016). There are many other metrics and ways to decompose these metrics into different process-based metrics (e.g., gain and loss components), but we don't work with those here (@oksanen2020; @baselga2021).
+Now that we have N from our previous model, we can calculate a metric of community change through time. For this dataset, since we are working with abundance data, we will be using a common metric in community ecology - Bray-Curtis dissimilarlity. For presence-absence data, the most common metric is Jaccard dissimilarity, which generates species turnover metrics, including overall turnover as well as species losses and gains (@oksanen2020; @hallett2016). There are many other metrics and ways to decompose these metrics into different process-based metrics (e.g., gain and loss components), but we don't work with those here (@oksanen2020; @baselga2021).
 
 We provide equations and example code of the two indices of community stability we used in our examples in the manuscript (Bray-Curtis and species turnover).
 
