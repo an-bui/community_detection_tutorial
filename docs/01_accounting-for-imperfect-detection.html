@@ -54,7 +54,26 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -214,7 +233,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <section id="model-formulation" class="level2" data-number="1.1">
 <h2 data-number="1.1" class="anchored" data-anchor-id="model-formulation"><span class="header-section-number">1.1</span> Model Formulation</h2>
-<p>Traditional multi-species abundance (MSAM) and occupancy (MSOM) models are built on several data requirements and assumptions:</p>
+<p>Traditional multi-species abundance (MSAM) and occupancy (MSOM) models <span class="citation" data-cites="dorazio2006">(<a href="references.html#ref-dorazio2006" role="doc-biblioref">Dorazio et al. 2006</a>)</span> are built on several data requirements and assumptions:</p>
 <ol type="1">
 <li><p>Sites are visited more than once within a year, so that repeat visits can be used to estimate detection probabilities.</p></li>
 <li><p>There is “closure” within a year at a site, which means species are neither gained or lost from a site within that year.</p></li>
@@ -238,7 +257,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 data-number="1.1.2" class="anchored" data-anchor-id="biological-process"><span class="header-section-number">1.1.2</span> Biological process</h3>
 <p>For abundance models, latent abundance, <span class="math inline">\(N_{s,t,y}\)</span>, is dependent on a rate parameter <span class="math inline">\(\lambda_{s,t,y}\)</span>:</p>
 <p><span class="math inline">\(N_{s,t,y} \sim Poisson(\lambda_{s,t,y})\)</span></p>
-<p>Which, in our models, is dependent on a regression that includes a species-specific intercept and random effects of site within species and year within species which are made identifiable based on the post-sweeping method described in <a href="https://doi.org/10.1002/eap.2159">Ogle and Barber (2020)</a>:</p>
+<p>Which, in our models, is dependent on a regression that includes a species-specific intercept and random effects of site within species and year within species which are made identifiable based on the post-sweeping method described in <span class="citation" data-cites="ogle2020">(<a href="references.html#ref-ogle2020" role="doc-biblioref">Ogle and Barber 2020</a>)</span>:</p>
 <p><span class="math inline">\(log(\lambda_{s,t,y}) = \beta_{0s} + \epsilon_{s,t} + \gamma_{s,y}\)</span></p>
 <p>Similarly, for occupancy models, <span class="math inline">\(z_{s,t,y}\)</span> is dependent on occupancy probability, <span class="math inline">\(\psi_{s,t,y}\)</span>:</p>
 <p><span class="math inline">\(z_{s,t,y} \sim Bernoulli(psi_{s,t,y})\)</span></p>
@@ -423,23 +442,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><strong>5 years</strong> that all received</li>
 <li><strong>2 surveys</strong> within each year</li>
 </ul>
-<p>In this dataset, detection probability depends on a survey covariate that is different for each survey replicate at each site in each year (e.g., could be differences in survey length or weather during the survey). You can find the simulated dataset in tidy form <a href="">here</a>(PATH TO DATAFRAME NEEDED).</p>
+<p>In this dataset, detection probability depends on a survey covariate that is different for each survey replicate at each site in each year (e.g., could be differences in survey length or weather during the survey).</p>
 <p>To run the model in R and JAGS, we will need:</p>
 <ul>
 <li>The model file</li>
 <li>The data list</li>
 <li>A script to wrap JAGS in R</li>
 </ul>
-<p>You can find all of these, along with the data simulation used in this tutorial, in the [FOLDER]</p>
+<p>You can find all of these, along with the data simulation and tidy version of the simulated data used in this tutorial, in the <a href="https://github.com/an-bui/community_detection_tutorial/tree/main/tutorials">MSAM tutorial folder</a>.</p>
 <section id="running-the-model" class="level3" data-number="1.2.1">
 <h3 data-number="1.2.1" class="anchored" data-anchor-id="running-the-model"><span class="header-section-number">1.2.1</span> Running the model</h3>
 <section id="the-model-file" class="level4" data-number="1.2.1.1">
 <h4 data-number="1.2.1.1" class="anchored" data-anchor-id="the-model-file"><span class="header-section-number">1.2.1.1</span> The model file</h4>
-<p>You will need to provide a path to the model file (which is its own R script, written in JAGS/BUGS language, so it won’t actually run in R). You can find ours <a href="">here</a>(PATH TO MODEL FILE). You will see that we define the path to this model in our model running script below.</p>
+<p>You will need to provide a path to the model file (which is its own R script, written in JAGS/BUGS language, so it won’t actually run in R). You can find ours <a href="https://github.com/an-bui/community_detection_tutorial/blob/main/tutorials/MSAM/code/MSAM_model.R">here</a>. You will see that we define the path to this model in our model running script below.</p>
 </section>
 <section id="the-data-list" class="level4" data-number="1.2.1.2">
 <h4 data-number="1.2.1.2" class="anchored" data-anchor-id="the-data-list"><span class="header-section-number">1.2.1.2</span> The data list</h4>
-<p>To run the model, we will need to provide JAGS with a data list, which you can find <a href="">here</a>PATH. We have code on how to prepare the data list <a href="">here</a>PATH</p>
+<p>To run the model, we will need to provide JAGS with a data list, which you can find <a href="https://github.com/an-bui/community_detection_tutorial/tree/main/tutorials/MSAM/data/model_inputs">here</a>. We have code on how to prepare the data list <a href="https://github.com/an-bui/community_detection_tutorial/blob/main/tutorials/MSAM/code/MSAM_data_simulation.R">here</a>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>data_list <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="fu">here</span>(<span class="st">'tutorials'</span>,</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>                          <span class="st">"MSAM"</span>,</span>
@@ -467,7 +486,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="the-script-to-run-the-model" class="level4" data-number="1.2.1.3">
 <h4 data-number="1.2.1.3" class="anchored" data-anchor-id="the-script-to-run-the-model"><span class="header-section-number">1.2.1.3</span> The script to run the model</h4>
-<p>We’ll run the model using the <code>jagsUI</code> wrapper package. You can find this script <a href="">here</a>PATH, and the general code to run a JAGS model is provided here:</p>
+<p>We’ll run the model using the <code>jagsUI</code> wrapper package. You can find this script <a href="https://github.com/an-bui/community_detection_tutorial/blob/main/tutorials/MSAM/code/MSAM_wrapper_script.R">here</a>, and the general code to run a JAGS model is provided here:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load packages -----------------------------------------------------------</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -586,6 +605,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Next up, we’ll use estimates of N for each species in each site in each year to calculate an index of community stability (beta diversity)!</p>
 
 
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="ref-dorazio2006" class="csl-entry" role="listitem">
+Dorazio, Robert M., Andrew Royle, Bo Soderstrom, and Anders Glimskar. 2006. <span>“Estimating Species Richness and Accumulation by Modeling Species Occurence and Detectability.”</span> <em>Ecology</em> 87 (4): 842–54. <a href="https://doi.org/10.1890/0012-9658(2006)87[842:ESRAAB]2.0.CO;2">https://doi.org/10.1890/0012-9658(2006)87[842:ESRAAB]2.0.CO;2</a>.
+</div>
+<div id="ref-ogle2020" class="csl-entry" role="listitem">
+Ogle, Kiona, and Jarrett J. Barber. 2020. <span>“Ensuring Identifiability in Hierarchical Mixed Effects Bayesian Models.”</span> <em>Ecological Applications</em> 30 (7): e02159. <a href="https://doi.org/10.1002/eap.2159">https://doi.org/10.1002/eap.2159</a>.
+</div>
+</div>
 </section>
 </section>
 

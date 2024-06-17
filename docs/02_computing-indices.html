@@ -54,7 +54,26 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -213,7 +232,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
-<p>Now that we have N from our previous model, we can calculate a metric of community change through time. For this dataset, since we are working with abundance data, we will be using a common metric in community ecology - Bray-Curtis dissimilarlity. For presence-absence data, the most common metric is Jaccard dissimilarity, which generates species turnover metrics (CITE). There are many other metrics and ways to decompose these metrics into different process-based metrics (e.g., gain and loss components), but we don’t work with those here (CITE).</p>
+<p>Now that we have N from our previous model, we can calculate a metric of community change through time. For this dataset, since we are working with abundance data, we will be using a common metric in community ecology - Bray-Curtis dissimilarlity. For presence-absence data, the most common metric is Jaccard dissimilarity, which generates species turnover metrics (<span class="citation" data-cites="oksanen2020">Oksanen et al. (<a href="references.html#ref-oksanen2020" role="doc-biblioref">2020</a>)</span>; <span class="citation" data-cites="hallett2016">Hallett et al. (<a href="references.html#ref-hallett2016" role="doc-biblioref">2016</a>)</span>). There are many other metrics and ways to decompose these metrics into different process-based metrics (e.g., gain and loss components), but we don’t work with those here (<span class="citation" data-cites="oksanen2020">Oksanen et al. (<a href="references.html#ref-oksanen2020" role="doc-biblioref">2020</a>)</span>; <span class="citation" data-cites="baselga2021">Baselga et al. (<a href="references.html#ref-baselga2021" role="doc-biblioref">2021</a>)</span>).</p>
 <p>We provide equations and example code of the two indices of community stability we used in our examples in the manuscript (Bray-Curtis and species turnover).</p>
 <section id="computing-indices-of-community-stability" class="level2" data-number="2.1">
 <h2 data-number="2.1" class="anchored" data-anchor-id="computing-indices-of-community-stability"><span class="header-section-number">2.1</span> Computing indices of community stability</h2>
@@ -252,8 +271,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 data-number="2.2" class="anchored" data-anchor-id="dissimilarity-metrics-in-jags-models"><span class="header-section-number">2.2</span> Dissimilarity metrics in JAGS models</h2>
 <section id="model-code" class="level3" data-number="2.2.1">
 <h3 data-number="2.2.1" class="anchored" data-anchor-id="model-code"><span class="header-section-number">2.2.1</span> Model code</h3>
-<p>We included these metrics as “derived quantities” in our MSAM models that we then pulled from models after they had converged. You can also derive these quantities in R, which we did for the PFNP plant dataset and code to do so can be found <a href="">here</a>FIND PATH</p>
-<p>These derived quantities come at the end of the model code that we highlighted in the previous step (“Accounting for imperfect detection”), but we do not provide the whole model here for brevity. To see the model with both components, you can look at our model file in the <a href="">MSAM tutorial folder</a></p>
+<p>We included these metrics as “derived quantities” in our MSAM models that we then pulled from models after they had converged. You can also derive these quantities in R, which we did for the PFNP plant dataset and code to do so can be found <a href="https://github.com/anamtk/long_term_community_stability/blob/main/04_nps_plants/monsoon/nps_MSAM/inputs_yrsite/MSAM_summaries.R">here</a></p>
+<p>These derived quantities come at the end of the model code that we highlighted in the previous step (“Accounting for imperfect detection”), but we do not provide the whole model here for brevity. To see the model with both components, you can look at our model file in the <a href="https://github.com/an-bui/community_detection_tutorial/tree/main/tutorials/MSAM">MSAM tutorial folder</a>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>model{</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  </span>
@@ -353,7 +372,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>  <span class="co">#select only the variables of interest</span></span>
 <span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(transect, year, Mean, SD)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>We have saved this dataframe in the <a href="">MSAM tutorial folder</a>PATH HERE.</p>
+<p>We have saved this dataframe in the <a href="https://github.com/an-bui/community_detection_tutorial/tree/main/tutorials/MSAM/data/model_outputs">MSAM tutorial folder</a>.</p>
 <p>Now we have a nice dataframe with mean (<span class="math inline">\(\bar{d}_{t,y}\)</span>) and standard deviation (<span class="math inline">\(\hat{\sigma}(\bar{d}_{t,y})\)</span>) for the Bray-Curtis dissimilarity calculated for each site along its time series. You will notice that the year value starts with year 2 and this is because this is the first year in which we have two community values to compare. and variance</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(stats)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -387,6 +406,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Next we will take the mean and standard deviation of these community change values and incorporate them into a regression with environmental covariates to examine how these covariates shape communities.</p>
 
 
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="ref-baselga2021" class="csl-entry" role="listitem">
+Baselga, Andres, David Orme, Sebastien Villeger, Julien De Bortoli, Fabien Leprieur, and Maxime Logez. 2021. <em>Betapart: Partitioning Beta Diversity into Turnover and Nestedness Components</em>. <a href="https://CRAN.R-project.org/package=betapart">https://CRAN.R-project.org/package=betapart</a>.
+</div>
+<div id="ref-hallett2016" class="csl-entry" role="listitem">
+Hallett, Lauren M., Sydney K. Jones, A. Andrew M. MacDonald, Matthew B. Jones, Dan F. B. Flynn, Julie Ripplinger, Peter Slaughter, Corinna Gries, and Scott L. Collins. 2016. <span>“Codyn: Anrpackage of Community Dynamics Metrics.”</span> Edited by Timothée Poisot. <em>Methods in Ecology and Evolution</em> 7 (10): 1146–51. <a href="https://doi.org/10.1111/2041-210x.12569">https://doi.org/10.1111/2041-210x.12569</a>.
+</div>
+<div id="ref-oksanen2020" class="csl-entry" role="listitem">
+Oksanen, Jari, F. Guillaume Blanchet, Michael Friendly, Roeland Kindt, Pierre Legendre, Dan McGlinn, Peter R. Minchin, et al. 2020. <em>Vegan: Community Ecology Package</em>. <a href="https://CRAN.R-project.org/package=vegan">https://CRAN.R-project.org/package=vegan</a>.
+</div>
+</div>
 </section>
 </section>
 
