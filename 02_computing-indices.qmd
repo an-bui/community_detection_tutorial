@@ -2,9 +2,9 @@
 title: "Computing indices of community stability"
 ---
 
-Now that we have N from our previous model, we can calculate a metric of community change through time. For this dataset, since we are working with abundance data, we will be using a common metric in community ecology - Bray-Curtis dissimilarlity. For presence-absence data, the most common metric is Jaccard dissimilarity, which generates species turnover metrics (CITE). There are many other metrics and ways to decompose these metrics into different process-based metrics (e.g., gain and loss components), but we don't work with those here (CITE). 
+Now that we have N from our previous model, we can calculate a metric of community change through time. For this dataset, since we are working with abundance data, we will be using a common metric in community ecology - Bray-Curtis dissimilarlity. For presence-absence data, the most common metric is Jaccard dissimilarity, which generates species turnover metrics (CITE). There are many other metrics and ways to decompose these metrics into different process-based metrics (e.g., gain and loss components), but we don't work with those here (CITE).
 
-We provide equations and example code of the two indices of community stability we used in our examples in the manuscript (Bray-Curtis and species turnover). 
+We provide equations and example code of the two indices of community stability we used in our examples in the manuscript (Bray-Curtis and species turnover).
 
 ## Computing indices of community stability
 
@@ -12,9 +12,9 @@ We provide equations and example code of the two indices of community stability 
 
 Bray-Curtis dissimilarlity describes changes in overall community abundance across time or space. This index is calculated by breaking the two communities being compared into three parts:
 
-1. The total number of shared individuals in communities 1 and 2 (*A*)
-2. The total number of individuals in only community 1 (*B*)
-3. The total number of individuals in only community 2 (*C*)
+1.  The total number of shared individuals in communities 1 and 2 (*A*)
+2.  The total number of individuals in only community 1 (*B*)
+3.  The total number of individuals in only community 2 (*C*)
 
 Then, dissimilarlity is calcluated as:
 
@@ -22,11 +22,11 @@ $BC = \frac{(B + C)}{(2A + B + C)}$
 
 ### Species turnover
 
-Species turnover is similar to Bray-Curtis dissimilarity - we break the two communities into three different groups: 
+Species turnover is similar to Bray-Curtis dissimilarity - we break the two communities into three different groups:
 
-1. The species shared between community 1 and 2 (*A*)
-2. The species only in community 1 (*B*)
-3. The species only in community 2 (*C*)
+1.  The species shared between community 1 and 2 (*A*)
+2.  The species only in community 1 (*B*)
+3.  The species only in community 2 (*C*)
 
 Then, turnover is:
 
@@ -34,7 +34,11 @@ $turnover = \frac{(B + C)}{(A + B + C)}$
 
 ### Interpretting both metrics
 
-In both metrics, **values closer to 1 indicate that the two communities are more different** (a larger fraction of individuals or species are different between communities 1 and 2 than are shared). In our case, we are calculating these change metrics between a given survey unit in a dataset ("community") between adjacent timepoints. For most datasets, this means we are comparing communities in time *y* to time *y+1*. However, for one dataset (PFNP plants), survey intervals were > 1 year apart, so we compared communities between adjacent time points (e.g. 2007 and 2014, 2014 and 2021). 
+In both metrics, **values closer to 1 indicate that the two communities are more different** (a larger fraction of individuals or species are different between communities 1 and 2 than are shared). In our case, we are calculating these change metrics between a given survey unit in a dataset ("community") between adjacent timepoints. For most datasets, this means we are comparing communities in time *y* to time *y+1*. However, for one dataset (PFNP plants), survey intervals were \> 1 year apart, so we compared communities between adjacent time points (e.g. 2007 and 2014, 2014 and 2021).
+
+### Notation in our paper
+
+In the paper, we define a general dissimilarity metric as $d_{t,y}$. And use the mean ($\bar{d}_{t,y}$) and variance ($Var(\bar{d}_{t,y})$) of this value as "data" in the environmental regression model.
 
 ## Dissimilarity metrics in JAGS models
 
@@ -90,7 +94,7 @@ model{
 
 ### Updating the model to get change metrics
 
-We updated our model for a short number of iterations to get good estimates of mean and standard deviation values for our change metrics. We then exported the mean and standard deviations for these metrics as "data" to be provided in the next model (Evaluating community stability in relation to environmental variables)
+We updated our converged model for a short number of iterations to get good estimates of mean and standard deviation values for our change metrics. We then exported the mean and standard deviations for these metrics as "data" to be provided in the next model (Evaluating community stability in relation to environmental variables)
 
 ```{r, eval = FALSE}
 
@@ -108,7 +112,8 @@ for(i in package.list){library(i, character.only = T)}
 
 # Load converged model -----------------------------------------------------------
 
-model <- readRDS(here("MSAM",
+model <- readRDS(here('tutorials',
+                      "MSAM",
                       'data',
                       'model_outputs',
                       'MSAM_model_output.RDS'))
@@ -160,18 +165,34 @@ if(length(new.packages)) install.packages(new.packages)
 ## And loading them
 for(i in package.list){library(i, character.only = T)}
 
-stats <- readRDS(here("MSAM",
+stats <- readRDS(here('tutorials',
+                      "MSAM",
                     "data",
                     "model_outputs",
                     "MSAM_bray_summary.RDS"))
 ```
 
-Now we have a nice dataframe with Bray-Curtis dissimilarity calculated for each site along its time series. You will notice that the year value starts with year 2 and this is because this is the first year in which we have two community values to compare. 
+Now we have a nice dataframe with mean ($\bar{d}_{t,y}$) and standard deviation ($\hat{\sigma}(\bar{d}_{t,y})$) for the Bray-Curtis dissimilarity calculated for each site along its time series. You will notice that the year value starts with year 2 and this is because this is the first year in which we have two community values to compare.  and variance 
 
 ```{r}
 str(stats)
 ```
 
+We can also look at how Bray-Curtis dissimilarity changes through time for each of our transects in our simulated datasets.
+
+```{r}
+labels <- c("Transect 1", "Transect 2", "Transect 3")
+names(labels) <- c('1', '2', '3')
+
+ggplot(stats) +
+  geom_ribbon(aes(x = year, ymin = Mean-SD, ymax = Mean+SD), alpha = 0.6) +
+  geom_line(aes(x = year, y = Mean)) +
+  facet_grid(~transect, labeller = labeller(transect = labels)) +
+  theme_bw() +
+  theme(strip.background = element_rect(fill = "white")) +
+  labs(x = "Year", y = "Bray-Curtis dissimilarity \n (Posterior mean and SD)")
+```
+
 ### Next: Evaluating community stability in relation to environmental variables
 
-Next we will take these change values and incorporate them into a regression with environmental covariates to examine how these covariates shape communities.
+Next we will take the mean and standard deviation of these community change values and incorporate them into a regression with environmental covariates to examine how these covariates shape communities.
