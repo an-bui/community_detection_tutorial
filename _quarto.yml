@@ -12,7 +12,6 @@ book:
     - 01_accounting-for-imperfect-detection.qmd
     - 02_computing-indices.qmd
     - 03_community-stability-environment.qmd
-    - 04_imperfect-detection.qmd
     - references.qmd
 
 bibliography: references.bib
