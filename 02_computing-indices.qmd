@@ -2,7 +2,7 @@
 title: "Computing indices of community stability"
 ---
 
-Now that we have N from our previous model, we can calculate a metric of community change through time. For this dataset, since we are working with abundance data, we will be using a common metric in community ecology - Bray-Curtis dissimilarlity. For presence-absence data, the most common metric is Jaccard dissimilarity, which generates species turnover metrics (CITE). There are many other metrics and ways to decompose these metrics into different process-based metrics (e.g., gain and loss components), but we don't work with those here (CITE).
+Now that we have N from our previous model, we can calculate a metric of community change through time. For this dataset, since we are working with abundance data, we will be using a common metric in community ecology - Bray-Curtis dissimilarlity. For presence-absence data, the most common metric is Jaccard dissimilarity, which generates species turnover metrics (@oksanen2020; @hallett2016). There are many other metrics and ways to decompose these metrics into different process-based metrics (e.g., gain and loss components), but we don't work with those here (@oksanen2020; @baselga2021).
 
 We provide equations and example code of the two indices of community stability we used in our examples in the manuscript (Bray-Curtis and species turnover).
 
@@ -44,9 +44,9 @@ In the paper, we define a general dissimilarity metric as $d_{t,y}$. And use the
 
 ### Model code
 
-We included these metrics as "derived quantities" in our MSAM models that we then pulled from models after they had converged. You can also derive these quantities in R, which we did for the PFNP plant dataset and code to do so can be found [here]()FIND PATH
+We included these metrics as "derived quantities" in our MSAM models that we then pulled from models after they had converged. You can also derive these quantities in R, which we did for the PFNP plant dataset and code to do so can be found [here](https://github.com/anamtk/long_term_community_stability/blob/main/04_nps_plants/monsoon/nps_MSAM/inputs_yrsite/MSAM_summaries.R)
 
-These derived quantities come at the end of the model code that we highlighted in the previous step ("Accounting for imperfect detection"), but we do not provide the whole model here for brevity. To see the model with both components, you can look at our model file in the [MSAM tutorial folder]()
+These derived quantities come at the end of the model code that we highlighted in the previous step ("Accounting for imperfect detection"), but we do not provide the whole model here for brevity. To see the model with both components, you can look at our model file in the [MSAM tutorial folder](https://github.com/an-bui/community_detection_tutorial/tree/main/tutorials/MSAM).
 
 ```{r, eval=FALSE}
 model{
@@ -151,7 +151,7 @@ stats <- as.data.frame(sum$statistics) %>%
 
 ```
 
-We have saved this dataframe in the [MSAM tutorial folder]()PATH HERE.
+We have saved this dataframe in the [MSAM tutorial folder](https://github.com/an-bui/community_detection_tutorial/tree/main/tutorials/MSAM/data/model_outputs).
 
 ```{r, include = FALSE}
 # Load packages -----------------------------------------------------------
@@ -172,7 +172,7 @@ stats <- readRDS(here('tutorials',
                     "MSAM_bray_summary.RDS"))
 ```
 
-Now we have a nice dataframe with mean ($\bar{d}_{t,y}$) and standard deviation ($\hat{\sigma}(\bar{d}_{t,y})$) for the Bray-Curtis dissimilarity calculated for each site along its time series. You will notice that the year value starts with year 2 and this is because this is the first year in which we have two community values to compare.  and variance 
+Now we have a nice dataframe with mean ($\bar{d}_{t,y}$) and standard deviation ($\hat{\sigma}(\bar{d}_{t,y})$) for the Bray-Curtis dissimilarity calculated for each site along its time series. You will notice that the year value starts with year 2 and this is because this is the first year in which we have two community values to compare. and variance
 
 ```{r}
 str(stats)
