@@ -54,7 +54,26 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -215,7 +234,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 data-number="3.1" class="anchored" data-anchor-id="model-formulation"><span class="header-section-number">3.1</span> Model formulation</h2>
 <p>Our diversity metrics are functionally proportions, so the data have domain <span class="math inline">\([0,1]\)</span>. We can model proportions with a beta distribution, where the mean dissimilarity metric calculated in the previous step, <span class="math inline">\(\bar{d}_{t,y}\)</span>, is beta distributed:</p>
 <p><span class="math inline">\(\bar{d}_{t,y} \sim Beta(\alpha_{t,y}, \beta_{t,y})\)</span></p>
-<p>We follow other beta regression approaches (CITE) to define the parameters <span class="math inline">\(\alpha_{t,y}\)</span> and <span class="math inline">\(\beta_{t,y}\)</span> as:</p>
+<p>We follow other beta regression approaches (<span class="citation" data-cites="irvine2016">Irvine, Rodhouse, and Keren (<a href="references.html#ref-irvine2016" role="doc-biblioref">2016</a>)</span>; <span class="citation" data-cites="ferrari2004">Ferrari and Cribari-Neto (<a href="references.html#ref-ferrari2004" role="doc-biblioref">2004</a>)</span>) to define the parameters <span class="math inline">\(\alpha_{t,y}\)</span> and <span class="math inline">\(\beta_{t,y}\)</span> as:</p>
 <p><span class="math inline">\(\alpha_{t,y} = \delta_{t,y}\phi_{t,y}\)</span></p>
 <p><span class="math inline">\(\beta_{t,y} = (1 - \delta_{t,y})\phi_{t,y}\)</span></p>
 <p>In these equations, <span class="math inline">\(\delta_{t,y}\)</span> is the mean or expected value of the stability index, <span class="math inline">\(\bar{d}_{t,y}\)</span> and <span class="math inline">\(\phi_{t,y}\)</span> is a precision-type term. When <span class="math inline">\(\phi_{t,y}\)</span> is larger, the variance for <span class="math inline">\(\bar{d}_{t,y}\)</span> (<span class="math inline">\(Var(\bar{d}_{t,y})\)</span>) is smaller. <span class="math inline">\(\phi_{t,y}\)</span> is defined as:</p>
@@ -225,7 +244,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>We set a uniform prior for the process variance, <span class="math inline">\(\sigma^2_{P}\)</span> with an upper limit that ensures that <span class="math inline">\(\alpha_{t,y} &gt; 0\)</span> and <span class="math inline">\(\beta_{t,y} &gt; 0\)</span>.</p>
 <p>The mean (expected) stability index, <span class="math inline">\(\delta_{t,y}\)</span>, is defined via a regression model:</p>
 <p><span class="math inline">\(logit(\delta_{t,y}) = \beta_{0,t} + \sum_{j =1}^J\beta_jZ_{j,t,y}\)</span></p>
-<p>In this regression, <span class="math inline">\(\beta_{0,t}\)</span> varies by a spatial factor by including a spatial random effect with priors that are hierarchically centered around a coarser spatial level, which is given a prior that varies around an overall community intercept (Ogle and Barber 2020 CITE). The coefficients <span class="math inline">\(\beta_1\)</span>, <span class="math inline">\(\beta_2\)</span>… <span class="math inline">\(\beta_J\)</span> denote the effects of an antecedent covariate, <span class="math inline">\(Z_{j,t,y}\)</span> for <em>j = 1, 2, …,J</em> covariates. Each covariate <span class="math inline">\(Z_{j,t,y}\)</span> is the weighted average of the current value for that covariate at time <em>y</em> and a defined number of past values for that covariate preceding time <em>y</em>. We divided these into either seasonal or yearly values for that covariate (e.g., spring temperature, yearly plant biomass). The weight (“importance weight”) of each of these values, <em>m</em>, in the overall calculation of <span class="math inline">\(Z_{j,t,y}\)</span>, <span class="math inline">\(w_{j,m}\)</span>, is estimated by the model using the stochastic antecedent modeling framework (Ogle et. al 2015). In this modeling framework, each <span class="math inline">\(w_{j,m}\)</span> is estimated using a Dirichlet prior so that the sum across all weights for that covariate equals one and more important time periods, <em>m</em> get higher importance weights. Thus, when a covariate effect, <span class="math inline">\(\beta_j\)</span> is significant, the weights for each time lag for that covariate informs over which timescale(s) that covariate influences community change.</p>
+<p>In this regression, <span class="math inline">\(\beta_{0,t}\)</span> varies by a spatial factor by including a spatial random effect with priors that are hierarchically centered around a coarser spatial level, which is given a prior that varies around an overall community intercept <span class="citation" data-cites="ogle2020">(<a href="references.html#ref-ogle2020" role="doc-biblioref">Ogle and Barber 2020</a>)</span>. The coefficients <span class="math inline">\(\beta_1\)</span>, <span class="math inline">\(\beta_2\)</span>… <span class="math inline">\(\beta_J\)</span> denote the effects of an antecedent covariate, <span class="math inline">\(Z_{j,t,y}\)</span> for <em>j = 1, 2, …,J</em> covariates. Each covariate <span class="math inline">\(Z_{j,t,y}\)</span> is the weighted average of the current value for that covariate at time <em>y</em> and a defined number of past values for that covariate preceding time <em>y</em>. We divided these into either seasonal or yearly values for that covariate (e.g., spring temperature, yearly plant biomass). The weight (“importance weight”) of each of these values, <em>m</em>, in the overall calculation of <span class="math inline">\(Z_{j,t,y}\)</span>, <span class="math inline">\(w_{j,m}\)</span>, is estimated by the model using the stochastic antecedent modeling framework <span class="citation" data-cites="ogle2015">(<a href="references.html#ref-ogle2015" role="doc-biblioref">Ogle et al. 2015</a>)</span>. In this modeling framework, each <span class="math inline">\(w_{j,m}\)</span> is estimated using a Dirichlet prior so that the sum across all weights for that covariate equals one and more important time periods, <em>m</em> get higher importance weights. Thus, when a covariate effect, <span class="math inline">\(\beta_j\)</span> is significant, the weights for each time lag for that covariate informs over which timescale(s) that covariate influences community change.</p>
 <section id="the-model-translated-to-jags-code" class="level3" data-number="3.1.1">
 <h3 data-number="3.1.1" class="anchored" data-anchor-id="the-model-translated-to-jags-code"><span class="header-section-number">3.1.1</span> The model translated to JAGS code</h3>
 <p>Below is example JAGS code for the model specified above:</p>
@@ -393,23 +412,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><strong>11 seasons of temperature data</strong> and</li>
 <li><strong>6 years of plant data</strong> as covariates</li>
 </ul>
-<p>In this dataset, we are evaluating how Bray-Curtis dissimilarity through time is shaped by the covariates of kelp biomass and temperature. You can find the dataset in tidy form <a href="">here</a>PATH</p>
+<p>In this dataset, we are evaluating how Bray-Curtis dissimilarity through time is shaped by the covariates of kelp biomass and temperature.</p>
 <p>Again, to run the model in R and JAGS, we will need:</p>
 <ul>
 <li>The model file</li>
 <li>The data list</li>
 <li>A script to wrap JAGS in R</li>
 </ul>
-<p>You can find all of these, along with the data simulation used in this tutorial, in the [FOLDER]</p>
+<p>You can find all of these, along with the tidy data and script used to prep the data list for this example, in the <a href="https://github.com/an-bui/community_detection_tutorial/tree/main/tutorials/SAM">SAM tutorial folder</a></p>
 <section id="running-the-model" class="level3" data-number="3.2.1">
 <h3 data-number="3.2.1" class="anchored" data-anchor-id="running-the-model"><span class="header-section-number">3.2.1</span> Running the model</h3>
 <section id="the-model-file" class="level4" data-number="3.2.1.1">
 <h4 data-number="3.2.1.1" class="anchored" data-anchor-id="the-model-file"><span class="header-section-number">3.2.1.1</span> The model file</h4>
-<p>You will need to provide a path to the model file (which is its own R script, written in JAGS/BUGS language, so it won’t actually run in R). You can find ours <a href="">here</a>(PATH TO MODEL FILE). You will see that we define the path to this model in our model running script below.</p>
+<p>You will need to provide a path to the model file (which is its own R script, written in JAGS/BUGS language, so it won’t actually run in R). You can find ours <a href="https://github.com/an-bui/community_detection_tutorial/blob/main/tutorials/SAM/code/SAM_model.R">here</a>. You will see that we define the path to this model in our model running script below.</p>
 </section>
 <section id="the-data-list" class="level4" data-number="3.2.1.2">
 <h4 data-number="3.2.1.2" class="anchored" data-anchor-id="the-data-list"><span class="header-section-number">3.2.1.2</span> The data list</h4>
-<p>To run the model, we will need to provide JAGS with a data list, which you can find <a href="">here</a>PATH. We have code on how to prepare the data list <a href="">here</a>PATH</p>
+<p>To run the model, we will need to provide JAGS with a data list, which you can find <a href="https://github.com/an-bui/community_detection_tutorial/tree/main/tutorials/SAM/data/model_inputs">here</a>. We have code on how to prepare the data list <a href="https://github.com/an-bui/community_detection_tutorial/blob/main/tutorials/SAM/code/SAM_data_list_prep.R">here</a>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>data_list <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="fu">here</span>(<span class="st">'tutorials'</span>,</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>                          <span class="st">'SAM'</span>,</span>
@@ -442,7 +461,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="the-script-to-run-the-model" class="level4" data-number="3.2.1.3">
 <h4 data-number="3.2.1.3" class="anchored" data-anchor-id="the-script-to-run-the-model"><span class="header-section-number">3.2.1.3</span> The script to run the model</h4>
-<p>Just like with the imperfect detection model, we’ll run the model using the <code>jagsUI</code> wrapper package. You can find this script <a href="">here</a>PATH, and the general code to run a JAGS model is provided here:</p>
+<p>Just like with the imperfect detection model, we’ll run the model using the <code>jagsUI</code> wrapper package. You can find this script <a href="https://github.com/an-bui/community_detection_tutorial/blob/main/tutorials/SAM/code/SAM_wrapper_script.R">here</a>, and the general code to run a JAGS model is provided here:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load packages ---------------------------------------------------------------</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -596,9 +615,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="wrapping-up" class="level2" data-number="3.3">
 <h2 data-number="3.3" class="anchored" data-anchor-id="wrapping-up"><span class="header-section-number">3.3</span> Wrapping up</h2>
-<p>For all models, you will want to be able to describe some kind of goodness-of-fit metric. We do this by replicating data in the model (e.g., <code>d.rep</code> in the model above) and then comparing the relationship between replicated data and observed data using a simple linear regression. You can find an <a href="">example</a>PATH of this process in the code for the paper.</p>
+<p>For all models, you will want to be able to describe some kind of goodness-of-fit metric. We do this by replicating data in the model (e.g., <code>d.rep</code> in the model above) and then comparing the relationship between replicated data and observed data using a simple linear regression <span class="citation" data-cites="conn2018">(<a href="references.html#ref-conn2018" role="doc-biblioref">Conn et al. 2018</a>)</span>. You can find an <a href="https://github.com/anamtk/long_term_community_stability/blob/main/01_sbc_fish/code/03_sb_analyses/02_SAM_modeling/04_sbc_SAM_GOF.R">example</a> of this process in the code for the paper.</p>
 
 
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="ref-conn2018" class="csl-entry" role="listitem">
+Conn, Paul B., Devin S. Johnson, Perry J. Williams, Sharon R. Melin, and Mevin B. Hooten. 2018. <span>“A Guide to Bayesian Model Checking for Ecologists.”</span> <em>Ecological Monographs</em> 88 (4): 526–42. <a href="https://doi.org/10.1002/ecm.1314">https://doi.org/10.1002/ecm.1314</a>.
+</div>
+<div id="ref-ferrari2004" class="csl-entry" role="listitem">
+Ferrari, Silvia, and Francisco Cribari-Neto. 2004. <span>“Beta Regression for Modelling Rates and Proportions.”</span> <em>Journal of Applied Statistics</em> 31 (7): 799–815. <a href="https://doi.org/10.1080/0266476042000214501">https://doi.org/10.1080/0266476042000214501</a>.
+</div>
+<div id="ref-irvine2016" class="csl-entry" role="listitem">
+Irvine, Kathryn M., T. J. Rodhouse, and Ilai N. Keren. 2016. <span>“Extending Ordinal Regression with a Latent Zero-Augmented Beta Distribution.”</span> <em>Journal of Agricultural, Biological and Environmental Statistics</em> 21 (4): 619–40. <a href="https://doi.org/10.1007/s13253-016-0265-2">https://doi.org/10.1007/s13253-016-0265-2</a>.
+</div>
+<div id="ref-ogle2020" class="csl-entry" role="listitem">
+Ogle, Kiona, and Jarrett J. Barber. 2020. <span>“Ensuring Identifiability in Hierarchical Mixed Effects Bayesian Models.”</span> <em>Ecological Applications</em> 30 (7): e02159. <a href="https://doi.org/10.1002/eap.2159">https://doi.org/10.1002/eap.2159</a>.
+</div>
+<div id="ref-ogle2015" class="csl-entry" role="listitem">
+Ogle, Kiona, Jarrett J. Barber, Greg A. Barron-Gafford, Lisa Patrick Bentley, Jessica M. Young, Travis E. Huxman, Michael E. Loik, and David T. Tissue. 2015. <span>“Quantifying Ecological Memory in Plant and Ecosystem Processes.”</span> Edited by Elsa Cleland. <em>Ecology Letters</em> 18 (3): 221–35. <a href="https://doi.org/10.1111/ele.12399">https://doi.org/10.1111/ele.12399</a>.
+</div>
+</div>
 </section>
 
 </main> <!-- /main -->
