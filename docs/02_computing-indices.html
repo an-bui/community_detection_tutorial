@@ -163,12 +163,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./04_imperfect-detection.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">How imperfect detection shapes community change estimates across datasets</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="./references.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">References</span></a>
   </div>
@@ -188,6 +182,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#bray-curtis-dissimilarity" id="toc-bray-curtis-dissimilarity" class="nav-link" data-scroll-target="#bray-curtis-dissimilarity"><span class="header-section-number">2.1.1</span> Bray-Curtis Dissimilarity</a></li>
   <li><a href="#species-turnover" id="toc-species-turnover" class="nav-link" data-scroll-target="#species-turnover"><span class="header-section-number">2.1.2</span> Species turnover</a></li>
   <li><a href="#interpretting-both-metrics" id="toc-interpretting-both-metrics" class="nav-link" data-scroll-target="#interpretting-both-metrics"><span class="header-section-number">2.1.3</span> Interpretting both metrics</a></li>
+  <li><a href="#notation-in-our-paper" id="toc-notation-in-our-paper" class="nav-link" data-scroll-target="#notation-in-our-paper"><span class="header-section-number">2.1.4</span> Notation in our paper</a></li>
   </ul></li>
   <li><a href="#dissimilarity-metrics-in-jags-models" id="toc-dissimilarity-metrics-in-jags-models" class="nav-link" data-scroll-target="#dissimilarity-metrics-in-jags-models"><span class="header-section-number">2.2</span> Dissimilarity metrics in JAGS models</a>
   <ul class="collapse">
@@ -248,6 +243,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 data-number="2.1.3" class="anchored" data-anchor-id="interpretting-both-metrics"><span class="header-section-number">2.1.3</span> Interpretting both metrics</h3>
 <p>In both metrics, <strong>values closer to 1 indicate that the two communities are more different</strong> (a larger fraction of individuals or species are different between communities 1 and 2 than are shared). In our case, we are calculating these change metrics between a given survey unit in a dataset (“community”) between adjacent timepoints. For most datasets, this means we are comparing communities in time <em>y</em> to time <em>y+1</em>. However, for one dataset (PFNP plants), survey intervals were &gt; 1 year apart, so we compared communities between adjacent time points (e.g.&nbsp;2007 and 2014, 2014 and 2021).</p>
 </section>
+<section id="notation-in-our-paper" class="level3" data-number="2.1.4">
+<h3 data-number="2.1.4" class="anchored" data-anchor-id="notation-in-our-paper"><span class="header-section-number">2.1.4</span> Notation in our paper</h3>
+<p>In the paper, we define a general dissimilarity metric as <span class="math inline">\(d_{t,y}\)</span>. And use the mean (<span class="math inline">\(\bar{d}_{t,y}\)</span>) and variance (<span class="math inline">\(Var(\bar{d}_{t,y})\)</span>) of this value as “data” in the environmental regression model.</p>
+</section>
 </section>
 <section id="dissimilarity-metrics-in-jags-models" class="level2" data-number="2.2">
 <h2 data-number="2.2" class="anchored" data-anchor-id="dissimilarity-metrics-in-jags-models"><span class="header-section-number">2.2</span> Dissimilarity metrics in JAGS models</h2>
@@ -301,7 +300,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="updating-the-model-to-get-change-metrics" class="level3" data-number="2.2.2">
 <h3 data-number="2.2.2" class="anchored" data-anchor-id="updating-the-model-to-get-change-metrics"><span class="header-section-number">2.2.2</span> Updating the model to get change metrics</h3>
-<p>We updated our model for a short number of iterations to get good estimates of mean and standard deviation values for our change metrics. We then exported the mean and standard deviations for these metrics as “data” to be provided in the next model (Evaluating community stability in relation to environmental variables)</p>
+<p>We updated our converged model for a short number of iterations to get good estimates of mean and standard deviation values for our change metrics. We then exported the mean and standard deviations for these metrics as “data” to be provided in the next model (Evaluating community stability in relation to environmental variables)</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load packages -----------------------------------------------------------</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -317,44 +316,45 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Load converged model -----------------------------------------------------------</span></span>
 <span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="fu">here</span>(<span class="st">"MSAM"</span>,</span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>                      <span class="st">'data'</span>,</span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>                      <span class="st">'model_outputs'</span>,</span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>                      <span class="st">'MSAM_model_output.RDS'</span>))</span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Update model to track Bray-Curtis ------------------------------------------------</span></span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="co">#now the parameter we want is just bray, none of the others</span></span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>params2 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"bray"</span>)</span>
-<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="co">#run this model so we have ~4000 samples to calculate mean and SD</span></span>
-<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>model2 <span class="ot">&lt;-</span> <span class="fu">update</span>(model,</span>
-<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>                 <span class="at">parameters.to.save =</span> params2,</span>
-<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>                 <span class="at">n.iter =</span> <span class="dv">1335</span>,</span>
-<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>                 <span class="at">parallel =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract summary stats of bray ------------------------------------------------</span></span>
-<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a><span class="co">#get a summary of this model and the parameters we saved (bray)</span></span>
-<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>sum <span class="ot">&lt;-</span> <span class="fu">summary</span>(model2<span class="sc">$</span>samples)</span>
-<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a><span class="co">#pull out mean and SD values from that summary</span></span>
-<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>stats <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(sum<span class="sc">$</span>statistics) <span class="sc">%&gt;%</span></span>
-<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rownames_to_column</span>(<span class="at">var =</span> <span class="st">'parm'</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(parm <span class="sc">!=</span> <span class="st">"deviance"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>  <span class="co">#re-connect these values with their transect and year IDs</span></span>
-<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(parm, </span>
-<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>           <span class="at">into =</span> <span class="fu">c</span>(<span class="st">"transect"</span>, <span class="st">"year"</span>),</span>
-<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>           <span class="at">sep =</span> <span class="st">","</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">transect =</span> <span class="fu">str_sub</span>(transect, <span class="dv">6</span>, (<span class="fu">nchar</span>(transect))),</span>
-<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>         <span class="at">year =</span> <span class="fu">str_sub</span>(year, <span class="dv">1</span>, (<span class="fu">nchar</span>(year)<span class="sc">-</span><span class="dv">1</span>))) <span class="sc">%&gt;%</span></span>
-<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">transect =</span> <span class="fu">as.numeric</span>(transect),</span>
-<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>         <span class="at">year =</span> <span class="fu">as.numeric</span>(year)) <span class="sc">%&gt;%</span></span>
-<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>  <span class="co">#select only the variables of interest</span></span>
-<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(transect, year, Mean, SD)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="fu">here</span>(<span class="st">'tutorials'</span>,</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>                      <span class="st">"MSAM"</span>,</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>                      <span class="st">'data'</span>,</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>                      <span class="st">'model_outputs'</span>,</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>                      <span class="st">'MSAM_model_output.RDS'</span>))</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Update model to track Bray-Curtis ------------------------------------------------</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="co">#now the parameter we want is just bray, none of the others</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>params2 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"bray"</span>)</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="co">#run this model so we have ~4000 samples to calculate mean and SD</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>model2 <span class="ot">&lt;-</span> <span class="fu">update</span>(model,</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>                 <span class="at">parameters.to.save =</span> params2,</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>                 <span class="at">n.iter =</span> <span class="dv">1335</span>,</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>                 <span class="at">parallel =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract summary stats of bray ------------------------------------------------</span></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a><span class="co">#get a summary of this model and the parameters we saved (bray)</span></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>sum <span class="ot">&lt;-</span> <span class="fu">summary</span>(model2<span class="sc">$</span>samples)</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a><span class="co">#pull out mean and SD values from that summary</span></span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>stats <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(sum<span class="sc">$</span>statistics) <span class="sc">%&gt;%</span></span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rownames_to_column</span>(<span class="at">var =</span> <span class="st">'parm'</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(parm <span class="sc">!=</span> <span class="st">"deviance"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>  <span class="co">#re-connect these values with their transect and year IDs</span></span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(parm, </span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>           <span class="at">into =</span> <span class="fu">c</span>(<span class="st">"transect"</span>, <span class="st">"year"</span>),</span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>           <span class="at">sep =</span> <span class="st">","</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">transect =</span> <span class="fu">str_sub</span>(transect, <span class="dv">6</span>, (<span class="fu">nchar</span>(transect))),</span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>         <span class="at">year =</span> <span class="fu">str_sub</span>(year, <span class="dv">1</span>, (<span class="fu">nchar</span>(year)<span class="sc">-</span><span class="dv">1</span>))) <span class="sc">%&gt;%</span></span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">transect =</span> <span class="fu">as.numeric</span>(transect),</span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>         <span class="at">year =</span> <span class="fu">as.numeric</span>(year)) <span class="sc">%&gt;%</span></span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>  <span class="co">#select only the variables of interest</span></span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(transect, year, Mean, SD)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We have saved this dataframe in the <a href="">MSAM tutorial folder</a>PATH HERE.</p>
-<p>Now we have a nice dataframe with Bray-Curtis dissimilarity calculated for each site along its time series. You will notice that the year value starts with year 2 and this is because this is the first year in which we have two community values to compare.</p>
+<p>Now we have a nice dataframe with mean (<span class="math inline">\(\bar{d}_{t,y}\)</span>) and standard deviation (<span class="math inline">\(\hat{\sigma}(\bar{d}_{t,y})\)</span>) for the Bray-Curtis dissimilarity calculated for each site along its time series. You will notice that the year value starts with year 2 and this is because this is the first year in which we have two community values to compare. and variance</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(stats)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -365,10 +365,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  $ SD      : num  0.0266 0.026 0.0252 0.0362 0.0372 ...</code></pre>
 </div>
 </div>
+<p>We can also look at how Bray-Curtis dissimilarity changes through time for each of our transects in our simulated datasets.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>labels <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Transect 1"</span>, <span class="st">"Transect 2"</span>, <span class="st">"Transect 3"</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(labels) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">'1'</span>, <span class="st">'2'</span>, <span class="st">'3'</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(stats) <span class="sc">+</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">ymin =</span> Mean<span class="sc">-</span>SD, <span class="at">ymax =</span> Mean<span class="sc">+</span>SD), <span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">y =</span> Mean)) <span class="sc">+</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(<span class="sc">~</span>transect, <span class="at">labeller =</span> <span class="fu">labeller</span>(<span class="at">transect =</span> labels)) <span class="sc">+</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">strip.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">"white"</span>)) <span class="sc">+</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Year"</span>, <span class="at">y =</span> <span class="st">"Bray-Curtis dissimilarity </span><span class="sc">\n</span><span class="st"> (Posterior mean and SD)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="02_computing-indices_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
 </section>
 <section id="next-evaluating-community-stability-in-relation-to-environmental-variables" class="level3" data-number="2.2.3">
 <h3 data-number="2.2.3" class="anchored" data-anchor-id="next-evaluating-community-stability-in-relation-to-environmental-variables"><span class="header-section-number">2.2.3</span> Next: Evaluating community stability in relation to environmental variables</h3>
-<p>Next we will take these change values and incorporate them into a regression with environmental covariates to examine how these covariates shape communities.</p>
+<p>Next we will take the mean and standard deviation of these community change values and incorporate them into a regression with environmental covariates to examine how these covariates shape communities.</p>
 
 
 </section>
