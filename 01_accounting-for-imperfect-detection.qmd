@@ -262,7 +262,7 @@ You will need to provide a path to the model file (which is its own R script, wr
 
 #### The data list
 
-To run the model, we will need to provide JAGS with a data list, which you can find [here]()PATH.
+To run the model, we will need to provide JAGS with a data list, which you can find [here]()PATH. We have code on how to prepare the data list [here]()PATH
 
 ```{r, include=FALSE}
 # Load packages -----------------------------------------------------------
@@ -280,7 +280,8 @@ for(i in package.list){library(i, character.only = T)}
 
 
 ```{r}
-data_list <- readRDS(here("MSAM",
+data_list <- readRDS(here('tutorials',
+                          "MSAM",
                           'data',
                           'model_inputs',
                           'MSAM_data_list.RDS'))
@@ -313,7 +314,8 @@ for(i in package.list){library(i, character.only = T)}
 
 # Load data -----------------------------------------------------------
 
-data_list <- readRDS(here("MSAM",
+data_list <- readRDS(here('tutorials',
+                          "MSAM",
                           'data',
                           'model_inputs',
                           'MSAM_data_list.RDS'))
@@ -321,7 +323,8 @@ data_list <- readRDS(here("MSAM",
 # Define model path -----------------------------------------------------------
 
 #The model file is here:
-model_file <- here("MSAM",
+model_file <- here('tutorials',
+                   "MSAM",
                    'code',
                    'MSAM_model.R')
 
@@ -345,7 +348,8 @@ parameters <- c('b0.star',
 
 #this was also generated when we simulated data - it aids in 
 #convergence when we have known values
-inits_list <- readRDS(here("MSAM",
+inits_list <- readRDS(here('tutorials',
+                           "MSAM",
                            'data',
                            "model_inputs",
                            'MSAM_inits_list.RDS'))
