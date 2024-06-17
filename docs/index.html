@@ -21,7 +21,26 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -206,18 +225,31 @@ ul.task-list li input[type="checkbox"] {
 </div>
 <section id="a-multi-species-model-accounting-for-imperfect-detection" class="level3">
 <h3 class="anchored" data-anchor-id="a-multi-species-model-accounting-for-imperfect-detection">A) Multi-species model accounting for imperfect detection</h3>
-<p>This model links observed abundance or presence-absence of species in a community to detection probabilities to generate a latent “true” abundance or occupancy for each species in each site in each year. We used this model to then generate metrics of community change (beta diversity). We built these models based on previous model developments for accounting for imperfect detection in community datasets (<a href="10.1890/0012-9658(2006)87[842:esraab]2.0.co;2">Dorazio et al.&nbsp;2006</a>).</p>
+<p>This model links observed abundance or presence-absence of species in a community to detection probabilities to generate a latent “true” abundance or occupancy for each species in each site in each year. We used this model to then generate metrics of community change (beta diversity). We built these models based on previous model developments for accounting for imperfect detection in community datasets <span class="citation" data-cites="dorazio2006">(<a href="references.html#ref-dorazio2006" role="doc-biblioref">Dorazio et al. 2006</a>)</span>.</p>
 </section>
 <section id="b-regression-model-with-environmental-covariates" class="level3">
 <h3 class="anchored" data-anchor-id="b-regression-model-with-environmental-covariates">B) Regression model with environmental covariates</h3>
-<p>This model incorporates mean and variance of community change metrics from the model in A) into a regression examining the effects of environmental covariates on community change. This model employs a stochastic antecedent modeling (SAM) framework (<a href="https://doi.org/10.1111/ele.12399">Ogle et al.&nbsp;2015</a>) to allow environmental covariates to have immediate and lagged responses.</p>
+<p>This model incorporates mean and variance of community change metrics from the model in A) into a regression examining the effects of environmental covariates on community change. This model employs a stochastic antecedent modeling (SAM) framework <span class="citation" data-cites="ogle2015">(<a href="references.html#ref-ogle2015" role="doc-biblioref">Ogle et al. 2015</a>)</span> to allow environmental covariates to have immediate and lagged responses.</p>
 </section>
 </section>
 <section id="outline" class="level2">
 <h2 class="anchored" data-anchor-id="outline">Outline</h2>
 <p>In the following pages, we will walk you through the model formulation as well as model code demonstrating the modeling framework.</p>
+<ol type="1">
+<li><strong>Accounting for imperfect detection</strong> walks through accounting for imperfect detection in a multi-species model</li>
+<li><strong>Computing indices of community stability</strong> illustrates how latent values from the models for imperfect detection can be used to calculate multiple indices of community stability (beta diversity)</li>
+<li><strong>Evaluating community stability in relation to environmental variables</strong> shows how to take these derived values of community change and uncertainty around them and use them in a regression that allows covariates to have immediate and lagged effects on community change</li>
+</ol>
 
 
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="ref-dorazio2006" class="csl-entry" role="listitem">
+Dorazio, Robert M., Andrew Royle, Bo Soderstrom, and Anders Glimskar. 2006. <span>“Estimating Species Richness and Accumulation by Modeling Species Occurence and Detectability.”</span> <em>Ecology</em> 87 (4): 842–54. <a href="https://doi.org/10.1890/0012-9658(2006)87[842:ESRAAB]2.0.CO;2">https://doi.org/10.1890/0012-9658(2006)87[842:ESRAAB]2.0.CO;2</a>.
+</div>
+<div id="ref-ogle2015" class="csl-entry" role="listitem">
+Ogle, Kiona, Jarrett J. Barber, Greg A. Barron-Gafford, Lisa Patrick Bentley, Jessica M. Young, Travis E. Huxman, Michael E. Loik, and David T. Tissue. 2015. <span>“Quantifying Ecological Memory in Plant and Ecosystem Processes.”</span> Edited by Elsa Cleland. <em>Ecology Letters</em> 18 (3): 221–35. <a href="https://doi.org/10.1111/ele.12399">https://doi.org/10.1111/ele.12399</a>.
+</div>
+</div>
 </section>
 </section>
 
