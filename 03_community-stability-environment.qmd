@@ -1,12 +1,12 @@
 ---
-title: "Evaluating community stability in relation to environmental variables"
+title: "Evaluating biodiversity in relation to environmental variables"
 ---
 
-We have used our estimates of detection error to correct our values of community stability. Now, we are interested in how dissimilarlity is influenced by environmental covariates at our site. However, in doing so, we also want to maintain both the mean estimate value as well as uncertainty estimated by the imperfect detection modeling process, so we will have to provide this in our model structure.
+We have used our estimates of detection error to correct our values of biodiversity. Now, we are interested in how biodiversity is influenced by environmental covariates at our site. However, in doing so, we also want to maintain both the mean estimate value as well as uncertainty estimated by the imperfect detection modeling process, so we will have to provide this in our model structure.
 
 ## Model formulation
 
-Our diversity metrics are functionally proportions, so the data have domain $[0,1]$. We can model proportions with a beta distribution, where the mean dissimilarity metric calculated in the previous step, $\bar{d}_{t,y}$, is beta distributed:
+Like many diversity metrics, our diversity metrics are functionally proportions, so the data have domain $[0,1]$. We can model proportions with a beta distribution, where the mean metric calculated in the previous step, $\bar{d}_{t,y}$, is beta distributed:
 
 $\bar{d}_{t,y} \sim Beta(\alpha_{t,y}, \beta_{t,y})$
 
@@ -16,7 +16,7 @@ $\alpha_{t,y} = \delta_{t,y}\phi_{t,y}$
 
 $\beta_{t,y} = (1 - \delta_{t,y})\phi_{t,y}$
 
-In these equations, $\delta_{t,y}$ is the mean or expected value of the stability index, $\bar{d}_{t,y}$ and $\phi_{t,y}$ is a precision-type term. When $\phi_{t,y}$ is larger, the variance for $\bar{d}_{t,y}$ ($Var(\bar{d}_{t,y})$) is smaller. $\phi_{t,y}$ is defined as:
+In these equations, $\delta_{t,y}$ is the mean or expected value of the biodiversity index, $\bar{d}_{t,y}$ and $\phi_{t,y}$ is a precision-type term. When $\phi_{t,y}$ is larger, the variance for $\bar{d}_{t,y}$ ($Var(\bar{d}_{t,y})$) is smaller. $\phi_{t,y}$ is defined as:
 
 $\phi_{t,y} = \frac{\delta_{t,y}(1-\delta_{t,y})}{Var(\bar{d}_{t,y})}-1$
 
@@ -26,11 +26,13 @@ $Var(\bar{d}_{t,y}) = \hat{\sigma}^2(\bar{d}_{t,y}) + \sigma^2_{P}$
 
 We set a uniform prior for the process variance, $\sigma^2_{P}$ with an upper limit that ensures that $\alpha_{t,y} > 0$ and $\beta_{t,y} > 0$.
 
-The mean (expected) stability index, $\delta_{t,y}$, is defined via a regression model:
+The mean (expected) biodiversity index, $\delta_{t,y}$, is defined via a regression model:
 
 $logit(\delta_{t,y}) = \beta_{0,t} + \sum_{j =1}^J\beta_jZ_{j,t,y}$
 
-In this regression, $\beta_{0,t}$ varies by a spatial factor by including a spatial random effect with priors that are hierarchically centered around a coarser spatial level, which is given a prior that varies around an overall community intercept [@ogle2020]. The coefficients $\beta_1$, $\beta_2$... $\beta_J$ denote the effects of an antecedent covariate, $Z_{j,t,y}$ for *j = 1, 2, ...,J* covariates. Each covariate $Z_{j,t,y}$ is the weighted average of the current value for that covariate at time *y* and a defined number of past values for that covariate preceding time *y*. We divided these into either seasonal or yearly values for that covariate (e.g., spring temperature, yearly plant biomass). The weight ("importance weight") of each of these values, *m*, in the overall calculation of $Z_{j,t,y}$, $w_{j,m}$, is estimated by the model using the stochastic antecedent modeling framework [@ogle2015]. In this modeling framework, each $w_{j,m}$ is estimated using a Dirichlet prior so that the sum across all weights for that covariate equals one and more important time periods, *m* get higher importance weights. Thus, when a covariate effect, $\beta_j$ is significant, the weights for each time lag for that covariate informs over which timescale(s) that covariate influences community change.
+In this regression, $\beta_{0,t}$ varies by a spatial factor by including a spatial random effect with priors that are hierarchically centered around a coarser spatial level, which is given a prior that varies around an overall community intercept [@ogle2020]. The coefficients $\beta_1$, $\beta_2$... $\beta_J$ denote the effects of an antecedent covariate, $Z_{j,t,y}$ for *j = 1, 2, ...,J* covariates. Each covariate $Z_{j,t,y}$ is the weighted average of the current value for that covariate at time *y* and a defined number of past values for that covariate preceding time *y*. We divided these into either seasonal or yearly values for that covariate (e.g., spring temperature, yearly plant biomass). The weight ("importance weight") of each of these values, *m*, in the overall calculation of $Z_{j,t,y}$, $w_{j,m}$, is estimated by the model using the stochastic antecedent modeling framework [@ogle2015]. In this modeling framework, each $w_{j,m}$ is estimated using a Dirichlet prior so that the sum across all weights for that covariate equals one and more important time periods, *m* get higher importance weights. Thus, when a covariate effect, $\beta_j$ is significant, the weights for each time lag for that covariate informs over which timescale(s) that covariate influences biodiversity.
+
+While the process will be different for some biodiversity metrics (e.g., species richness, Shannon diversity), similar partitioning of variance can be performed for other data distributions (e.g., Poisson) by using the mean $E(x)$ and variance $Var(x)$ equations for any distribution.
 
 ### The model translated to JAGS code
 
@@ -190,7 +192,7 @@ model{
 
 ## The model in action
 
-Because we have greatly reduced the dimensionality of our community dataset by deriving a change metric for each site in each year, *y* to the next year *y+1*, the models run efficiently enough that we can use one of the case studies from the paper in this tutorial. We will demonstrate the utility of this model for the [SBC Fish LTER dataset](https://sbclter.msi.ucsb.edu/data/catalog/package/?package=knb-lter-sbc.17). This LTER site also has yearly data on [kelp biomass](https://sbclter.msi.ucsb.edu/data/catalog/package/?package=knb-lter-sbc.18) and [bottom temperature](https://sbclter.msi.ucsb.edu/data/catalog/package/?package=knb-lter-sbc.13) data from data loggers, which we used as environmental covariates in this model.
+Because we have greatly reduced the dimensionality of our community dataset by deriving a change metric for each site in each year, *y* to the next year *y+1*, the models run efficiently enough that we can use real data for this tutorial. We will demonstrate the utility of this model for the [SBC Fish LTER dataset](https://sbclter.msi.ucsb.edu/data/catalog/package/?package=knb-lter-sbc.17). This LTER site also has yearly data on [kelp biomass](https://sbclter.msi.ucsb.edu/data/catalog/package/?package=knb-lter-sbc.18) and [bottom temperature](https://sbclter.msi.ucsb.edu/data/catalog/package/?package=knb-lter-sbc.13) data from data loggers, which we used as environmental covariates in this model.
 
 This dataset has:
 
@@ -363,7 +365,7 @@ ggplot(betas, aes(x = `50%`, y = parm)) +
   theme_bw()
 ```
 
-This figure suggests that there is a clear effect of temperature, but not plant biomass, on community change. Higher temperatures lead to higher community change. We can then look at which seasons drive this temperature effect:
+This figure suggests that there is a clear effect of temperature, but not plant biomass, on Bray-Curtis dissimilarity. Higher temperatures lead to higher community change. We can then look at which seasons drive this temperature effect:
 
 ```{r, warning=FALSE}
 
@@ -412,4 +414,4 @@ The dashed line indicates the values of importance weights if they were all equa
 
 ## Wrapping up
 
-For all models, you will want to be able to describe some kind of goodness-of-fit metric. We do this by replicating data in the model (e.g., `d.rep` in the model above) and then comparing the relationship between replicated data and observed data using a simple linear regression [@conn2018]. You can find an [example](https://github.com/anamtk/long_term_community_stability/blob/main/01_sbc_fish/code/03_sb_analyses/02_SAM_modeling/04_sbc_SAM_GOF.R) of this process in the code for the paper.
+For all models, you will want to be able to describe some kind of goodness-of-fit metric. We do this by replicating data in the model (e.g., `d.rep` in the model above) and then comparing the relationship between replicated data and observed data using a simple linear regression [@conn2018].

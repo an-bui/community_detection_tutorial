@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Imperfect detection and community change: a modeling tutorial - 2&nbsp; Computing indices of community stability</title>
+<title>If you’re rare, do I care? A modeling tutorial - 2&nbsp; Computing indices of biodiversity</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -128,7 +128,7 @@ div.csl-indent {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./02_computing-indices.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Computing indices of community stability</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./02_computing-indices.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Computing indices of biodiversity</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -143,7 +143,7 @@ div.csl-indent {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">Imperfect detection and community change: a modeling tutorial</a> 
+      <a href="./">If you’re rare, do I care? A modeling tutorial</a> 
         <div class="sidebar-tools-main">
     <a href="https://github.com/an-bui/community_detection_tutorial" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
 </div>
@@ -171,13 +171,13 @@ div.csl-indent {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./02_computing-indices.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Computing indices of community stability</span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Computing indices of biodiversity</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./03_community-stability-environment.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Evaluating community stability in relation to environmental variables</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Evaluating biodiversity in relation to environmental variables</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -196,18 +196,18 @@ div.csl-indent {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#computing-indices-of-community-stability" id="toc-computing-indices-of-community-stability" class="nav-link active" data-scroll-target="#computing-indices-of-community-stability"><span class="header-section-number">2.1</span> Computing indices of community stability</a>
+  <li><a href="#computing-indices-of-biodiversity" id="toc-computing-indices-of-biodiversity" class="nav-link active" data-scroll-target="#computing-indices-of-biodiversity"><span class="header-section-number">2.1</span> Computing indices of biodiversity</a>
   <ul class="collapse">
   <li><a href="#bray-curtis-dissimilarity" id="toc-bray-curtis-dissimilarity" class="nav-link" data-scroll-target="#bray-curtis-dissimilarity"><span class="header-section-number">2.1.1</span> Bray-Curtis Dissimilarity</a></li>
   <li><a href="#species-turnover" id="toc-species-turnover" class="nav-link" data-scroll-target="#species-turnover"><span class="header-section-number">2.1.2</span> Species turnover</a></li>
   <li><a href="#interpretting-both-metrics" id="toc-interpretting-both-metrics" class="nav-link" data-scroll-target="#interpretting-both-metrics"><span class="header-section-number">2.1.3</span> Interpretting both metrics</a></li>
   <li><a href="#notation-in-our-paper" id="toc-notation-in-our-paper" class="nav-link" data-scroll-target="#notation-in-our-paper"><span class="header-section-number">2.1.4</span> Notation in our paper</a></li>
   </ul></li>
-  <li><a href="#dissimilarity-metrics-in-jags-models" id="toc-dissimilarity-metrics-in-jags-models" class="nav-link" data-scroll-target="#dissimilarity-metrics-in-jags-models"><span class="header-section-number">2.2</span> Dissimilarity metrics in JAGS models</a>
+  <li><a href="#biodiversity-metrics-in-jags-models" id="toc-biodiversity-metrics-in-jags-models" class="nav-link" data-scroll-target="#biodiversity-metrics-in-jags-models"><span class="header-section-number">2.2</span> Biodiversity metrics in JAGS models</a>
   <ul class="collapse">
   <li><a href="#model-code" id="toc-model-code" class="nav-link" data-scroll-target="#model-code"><span class="header-section-number">2.2.1</span> Model code</a></li>
-  <li><a href="#updating-the-model-to-get-change-metrics" id="toc-updating-the-model-to-get-change-metrics" class="nav-link" data-scroll-target="#updating-the-model-to-get-change-metrics"><span class="header-section-number">2.2.2</span> Updating the model to get change metrics</a></li>
-  <li><a href="#next-evaluating-community-stability-in-relation-to-environmental-variables" id="toc-next-evaluating-community-stability-in-relation-to-environmental-variables" class="nav-link" data-scroll-target="#next-evaluating-community-stability-in-relation-to-environmental-variables"><span class="header-section-number">2.2.3</span> Next: Evaluating community stability in relation to environmental variables</a></li>
+  <li><a href="#updating-the-model-to-get-biodiversity-metrics" id="toc-updating-the-model-to-get-biodiversity-metrics" class="nav-link" data-scroll-target="#updating-the-model-to-get-biodiversity-metrics"><span class="header-section-number">2.2.2</span> Updating the model to get biodiversity metrics</a></li>
+  <li><a href="#next-evaluating-biodiversity-in-relation-to-environmental-variables" id="toc-next-evaluating-biodiversity-in-relation-to-environmental-variables" class="nav-link" data-scroll-target="#next-evaluating-biodiversity-in-relation-to-environmental-variables"><span class="header-section-number">2.2.3</span> Next: Evaluating biodiversity in relation to environmental variables</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -217,7 +217,7 @@ div.csl-indent {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Computing indices of community stability</span></h1>
+<h1 class="title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Computing indices of biodiversity</span></h1>
 </div>
 
 
@@ -232,10 +232,13 @@ div.csl-indent {
 
 </header>
 
-<p>Now that we have N from our previous model, we can calculate a metric of community change through time. For this dataset, since we are working with abundance data, we will be using a common metric in community ecology - Bray-Curtis dissimilarlity. For presence-absence data, the most common metric is Jaccard dissimilarity, which generates species turnover metrics, including overall turnover as well as species losses and gains (<span class="citation" data-cites="oksanen2020">Oksanen et al. (<a href="references.html#ref-oksanen2020" role="doc-biblioref">2020</a>)</span>; <span class="citation" data-cites="hallett2016">Hallett et al. (<a href="references.html#ref-hallett2016" role="doc-biblioref">2016</a>)</span>). There are many other metrics and ways to decompose these metrics into different process-based metrics (e.g., gain and loss components), but we don’t work with those here (<span class="citation" data-cites="oksanen2020">Oksanen et al. (<a href="references.html#ref-oksanen2020" role="doc-biblioref">2020</a>)</span>; <span class="citation" data-cites="baselga2021">Baselga et al. (<a href="references.html#ref-baselga2021" role="doc-biblioref">2021</a>)</span>).</p>
-<p>We provide equations and example code of the two indices of community stability we used in our examples in the manuscript (Bray-Curtis and species turnover).</p>
-<section id="computing-indices-of-community-stability" class="level2" data-number="2.1">
-<h2 data-number="2.1" class="anchored" data-anchor-id="computing-indices-of-community-stability"><span class="header-section-number">2.1</span> Computing indices of community stability</h2>
+<p>Now that we have N from our previous model (or <span class="math inline">\(z\)</span> or <span class="math inline">\(\psi\)</span> for an occupancy model), we can calculate metrics of biodiversity. These can include any metric commonly used to describe <span class="math inline">\(\alpha\)</span> or <span class="math inline">\(\beta\)</span> diversity and can include taxonomic, phylogenetic, and functional diversity metrics.</p>
+<p>Abundance-based metrics common in community ecology include Shannon diversity (taxonomic <span class="math inline">\(\alpha\)</span> diversity), Bray-Curtis dissimilarity (taxonomic <span class="math inline">\(beta\)</span> diversity), and Rao’s quadratic entropy (functional <span class="math inline">\(\alpha\)</span> diversity). These can be derived from estimates of <span class="math inline">\(N\)</span> from a MSAM or from estimates of <span class="math inline">\(\psi\)</span> from an occupancy model (as pseudo-abundance data).</p>
+<p>Occurrence-based metrics common in community ecology include species richness (taxonomic <span class="math inline">\(alpha\)</span> diversity), Jaccard dissimilarity (taxonomic <span class="math inline">\(beta\)</span> diversity), and functional richness (functional <span class="math inline">\(\alpha\)</span> diversity). These can be derived from estimates of <span class="math inline">\(z\)</span> from an occupancy model, or from data simplifed from an MSAM to describe presence-absence as opposed to abundance data.</p>
+<p>Useful resources for biodiversity metrics and implementing them in R:(<span class="citation" data-cites="oksanen2020">Oksanen et al. (<a href="references.html#ref-oksanen2020" role="doc-biblioref">2020</a>)</span>; <span class="citation" data-cites="hallett2016">Hallett et al. (<a href="references.html#ref-hallett2016" role="doc-biblioref">2016</a>)</span>; <span class="citation" data-cites="morris2014">Morris et al. (<a href="references.html#ref-morris2014" role="doc-biblioref">2014</a>)</span>; <span class="citation" data-cites="grenié2025">Grenié and Gruson (<a href="references.html#ref-grenié2025" role="doc-biblioref">2025</a>)</span>)</p>
+<p>We provide examples of many of these in the main text and supporting information of the main text of our paper. Further, these can be generated as derived quantities within a Bayesian model or using posterior samples of the above quantities (<span class="math inline">\(N\)</span>, <span class="math inline">\(z\)</span>, or <span class="math inline">\(\psi\)</span>) in R.</p>
+<section id="computing-indices-of-biodiversity" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="computing-indices-of-biodiversity"><span class="header-section-number">2.1</span> Computing indices of biodiversity</h2>
 <section id="bray-curtis-dissimilarity" class="level3" data-number="2.1.1">
 <h3 data-number="2.1.1" class="anchored" data-anchor-id="bray-curtis-dissimilarity"><span class="header-section-number">2.1.1</span> Bray-Curtis Dissimilarity</h3>
 <p>Bray-Curtis dissimilarlity describes changes in overall community abundance across time or space. This index is calculated by breaking the two communities being compared into three parts:</p>
@@ -257,6 +260,7 @@ div.csl-indent {
 </ol>
 <p>Then, turnover is:</p>
 <p><span class="math inline">\(turnover = \frac{(B + C)}{(A + B + C)}\)</span></p>
+<p>For this study (plant dataset), we decomposed turnover into “gains” and “losses” by just including either <span class="math inline">\(B\)</span> (losses) or <span class="math inline">\(C\)</span> (gains) in the denominator.</p>
 </section>
 <section id="interpretting-both-metrics" class="level3" data-number="2.1.3">
 <h3 data-number="2.1.3" class="anchored" data-anchor-id="interpretting-both-metrics"><span class="header-section-number">2.1.3</span> Interpretting both metrics</h3>
@@ -264,14 +268,14 @@ div.csl-indent {
 </section>
 <section id="notation-in-our-paper" class="level3" data-number="2.1.4">
 <h3 data-number="2.1.4" class="anchored" data-anchor-id="notation-in-our-paper"><span class="header-section-number">2.1.4</span> Notation in our paper</h3>
-<p>In the paper, we define a general dissimilarity metric as <span class="math inline">\(d_{t,y}\)</span>. And use the mean (<span class="math inline">\(\bar{d}_{t,y}\)</span>) and variance (<span class="math inline">\(Var(\bar{d}_{t,y})\)</span>) of this value as “data” in the environmental regression model.</p>
+<p>In the paper, we define a general biodiversity metric as <span class="math inline">\(d_{t,y}\)</span>. And use the mean (<span class="math inline">\(\bar{d}_{t,y}\)</span>) and variance (<span class="math inline">\(Var(\bar{d}_{t,y})\)</span>) of this value as “data” in the environmental regression model.</p>
 </section>
 </section>
-<section id="dissimilarity-metrics-in-jags-models" class="level2" data-number="2.2">
-<h2 data-number="2.2" class="anchored" data-anchor-id="dissimilarity-metrics-in-jags-models"><span class="header-section-number">2.2</span> Dissimilarity metrics in JAGS models</h2>
+<section id="biodiversity-metrics-in-jags-models" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="biodiversity-metrics-in-jags-models"><span class="header-section-number">2.2</span> Biodiversity metrics in JAGS models</h2>
 <section id="model-code" class="level3" data-number="2.2.1">
 <h3 data-number="2.2.1" class="anchored" data-anchor-id="model-code"><span class="header-section-number">2.2.1</span> Model code</h3>
-<p>We included these metrics as “derived quantities” in our MSAM models that we then pulled from models after they had converged. You can also derive these quantities in R, which we did for the PFNP plant dataset and code to do so can be found <a href="https://github.com/anamtk/long_term_community_stability/blob/main/04_nps_plants/monsoon/nps_MSAM/inputs_yrsite/MSAM_summaries.R">here</a></p>
+<p>We included these metrics as “derived quantities” in our MSAM models that we then pulled from models after they had converged. You can also derive these quantities in R, which we did for the PFNP plant dataset and code to do so can be found <a href="">here</a></p>
 <p>These derived quantities come at the end of the model code that we highlighted in the previous step (“Accounting for imperfect detection”), but we do not provide the whole model here for brevity. To see the model with both components, you can look at our model file in the <a href="https://github.com/an-bui/community_detection_tutorial/tree/main/tutorials/MSAM">MSAM tutorial folder</a>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>model{</span>
@@ -317,9 +321,9 @@ div.csl-indent {
 <span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="updating-the-model-to-get-change-metrics" class="level3" data-number="2.2.2">
-<h3 data-number="2.2.2" class="anchored" data-anchor-id="updating-the-model-to-get-change-metrics"><span class="header-section-number">2.2.2</span> Updating the model to get change metrics</h3>
-<p>We updated our converged model for a short number of iterations to get good estimates of mean and standard deviation values for our change metrics. We then exported the mean and standard deviations for these metrics as “data” to be provided in the next model (Evaluating community stability in relation to environmental variables)</p>
+<section id="updating-the-model-to-get-biodiversity-metrics" class="level3" data-number="2.2.2">
+<h3 data-number="2.2.2" class="anchored" data-anchor-id="updating-the-model-to-get-biodiversity-metrics"><span class="header-section-number">2.2.2</span> Updating the model to get biodiversity metrics</h3>
+<p>We updated our converged model for a short number of iterations to get good estimates of mean and standard deviation values for our biodiversity metrics. We then exported the mean and standard deviations for these metrics as “data” to be provided in the next model (Evaluating biodiversity in relation to environmental variables)</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load packages -----------------------------------------------------------</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -401,17 +405,20 @@ div.csl-indent {
 </div>
 </div>
 </section>
-<section id="next-evaluating-community-stability-in-relation-to-environmental-variables" class="level3" data-number="2.2.3">
-<h3 data-number="2.2.3" class="anchored" data-anchor-id="next-evaluating-community-stability-in-relation-to-environmental-variables"><span class="header-section-number">2.2.3</span> Next: Evaluating community stability in relation to environmental variables</h3>
-<p>Next we will take the mean and standard deviation of these community change values and incorporate them into a regression with environmental covariates to examine how these covariates shape communities.</p>
+<section id="next-evaluating-biodiversity-in-relation-to-environmental-variables" class="level3" data-number="2.2.3">
+<h3 data-number="2.2.3" class="anchored" data-anchor-id="next-evaluating-biodiversity-in-relation-to-environmental-variables"><span class="header-section-number">2.2.3</span> Next: Evaluating biodiversity in relation to environmental variables</h3>
+<p>Next we will take the mean and standard deviation of these biodiversity values and incorporate them into a regression with environmental covariates to examine how these covariates shape communities.</p>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
-<div id="ref-baselga2021" class="csl-entry" role="listitem">
-Baselga, Andres, David Orme, Sebastien Villeger, Julien De Bortoli, Fabien Leprieur, and Maxime Logez. 2021. <em>Betapart: Partitioning Beta Diversity into Turnover and Nestedness Components</em>. <a href="https://CRAN.R-project.org/package=betapart">https://CRAN.R-project.org/package=betapart</a>.
+<div id="ref-grenié2025" class="csl-entry" role="listitem">
+Grenié, M, and H Gruson. 2025. <em>Fundiversity: Easy Computation of Functional Diversity Indices</em>. <a href="https://CRAN.R-project.org/package=fundiversity">https://CRAN.R-project.org/package=fundiversity</a>.
 </div>
 <div id="ref-hallett2016" class="csl-entry" role="listitem">
 Hallett, Lauren M., Sydney K. Jones, A. Andrew M. MacDonald, Matthew B. Jones, Dan F. B. Flynn, Julie Ripplinger, Peter Slaughter, Corinna Gries, and Scott L. Collins. 2016. <span>“Codyn: Anrpackage of Community Dynamics Metrics.”</span> Edited by Timothée Poisot. <em>Methods in Ecology and Evolution</em> 7 (10): 1146–51. <a href="https://doi.org/10.1111/2041-210x.12569">https://doi.org/10.1111/2041-210x.12569</a>.
+</div>
+<div id="ref-morris2014" class="csl-entry" role="listitem">
+Morris, E. Kathryn, Tancredi Caruso, François Buscot, Markus Fischer, Christine Hancock, Tanja S. Maier, Torsten Meiners, et al. 2014. <span>“Choosing and Using Diversity Indices: Insights for Ecological Applications from the German Biodiversity Exploratories.”</span> <em>Ecology and Evolution</em> 4 (18): 3514–24. <a href="https://doi.org/10.1002/ece3.1155">https://doi.org/10.1002/ece3.1155</a>.
 </div>
 <div id="ref-oksanen2020" class="csl-entry" role="listitem">
 Oksanen, Jari, F. Guillaume Blanchet, Michael Friendly, Roeland Kindt, Pierre Legendre, Dan McGlinn, Peter R. Minchin, et al. 2020. <em>Vegan: Community Ecology Package</em>. <a href="https://CRAN.R-project.org/package=vegan">https://CRAN.R-project.org/package=vegan</a>.
@@ -662,7 +669,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   </div>
   <div class="nav-page nav-page-next">
       <a href="./03_community-stability-environment.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Evaluating community stability in relation to environmental variables</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Evaluating biodiversity in relation to environmental variables</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Imperfect detection and community change: a modeling tutorial - 1&nbsp; Accounting for imperfect detection</title>
+<title>If you’re rare, do I care? A modeling tutorial - 1&nbsp; Accounting for imperfect detection</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -143,7 +143,7 @@ div.csl-indent {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">Imperfect detection and community change: a modeling tutorial</a> 
+      <a href="./">If you’re rare, do I care? A modeling tutorial</a> 
         <div class="sidebar-tools-main">
     <a href="https://github.com/an-bui/community_detection_tutorial" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
 </div>
@@ -171,13 +171,13 @@ div.csl-indent {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./02_computing-indices.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Computing indices of community stability</span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Computing indices of biodiversity</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./03_community-stability-environment.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Evaluating community stability in relation to environmental variables</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Evaluating biodiversity in relation to environmental variables</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -206,7 +206,7 @@ div.csl-indent {
   <li><a href="#the-model-in-action" id="toc-the-model-in-action" class="nav-link" data-scroll-target="#the-model-in-action"><span class="header-section-number">1.2</span> The model in action</a>
   <ul class="collapse">
   <li><a href="#running-the-model" id="toc-running-the-model" class="nav-link" data-scroll-target="#running-the-model"><span class="header-section-number">1.2.1</span> Running the model</a></li>
-  <li><a href="#next-using-n-to-compute-indices-of-community-stability" id="toc-next-using-n-to-compute-indices-of-community-stability" class="nav-link" data-scroll-target="#next-using-n-to-compute-indices-of-community-stability"><span class="header-section-number">1.2.2</span> Next: using N to compute indices of community stability</a></li>
+  <li><a href="#next-using-n-z-or-psi-to-compute-indices-of-biodiversity" id="toc-next-using-n-z-or-psi-to-compute-indices-of-biodiversity" class="nav-link" data-scroll-target="#next-using-n-z-or-psi-to-compute-indices-of-biodiversity"><span class="header-section-number">1.2.2</span> Next: using N, <span class="math inline">\(z\)</span>, or <span class="math inline">\(\psi\)</span> to compute indices of biodiversity</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -600,9 +600,9 @@ div.csl-indent {
 <p>We have run this just for enough iterations to assess convergence (it likely hasn’t converged) so that we can provide the model output for downstream tutorial steps. For your own datasets, you may need to keep running this model a few times for more iterations than we’ve shown above, resetting initial values based on new model runs to get this model to converge. For the datasets we evaluated in our manuscript, we set a convergence cutoff of &gt;95% of all nodes converging at Gelman diagnostic (<span class="math inline">\(\hat{R} \leq 1.2\)</span>).</p>
 </section>
 </section>
-<section id="next-using-n-to-compute-indices-of-community-stability" class="level3" data-number="1.2.2">
-<h3 data-number="1.2.2" class="anchored" data-anchor-id="next-using-n-to-compute-indices-of-community-stability"><span class="header-section-number">1.2.2</span> Next: using N to compute indices of community stability</h3>
-<p>Next up, we’ll use estimates of N for each species in each site in each year to calculate an index of community stability (beta diversity)!</p>
+<section id="next-using-n-z-or-psi-to-compute-indices-of-biodiversity" class="level3" data-number="1.2.2">
+<h3 data-number="1.2.2" class="anchored" data-anchor-id="next-using-n-z-or-psi-to-compute-indices-of-biodiversity"><span class="header-section-number">1.2.2</span> Next: using N, <span class="math inline">\(z\)</span>, or <span class="math inline">\(\psi\)</span> to compute indices of biodiversity</h3>
+<p>Next up, we’ll use estimates of N (or <span class="math inline">\(z\)</span> or <span class="math inline">\(\psi\)</span> for an occupancy model) for each species in each site in each year to calculate indices of biodiversity!</p>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
@@ -858,7 +858,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   </div>
   <div class="nav-page nav-page-next">
       <a href="./02_computing-indices.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Computing indices of community stability</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Computing indices of biodiversity</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

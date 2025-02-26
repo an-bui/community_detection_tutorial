@@ -6,9 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Ana Miller-ter Kuile">
+<meta name="author" content="Ana Miller-ter Kuile and An Bui">
 
-<title>Imperfect detection and community change: a modeling tutorial</title>
+<title>If you’re rare, do I care? A modeling tutorial</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -107,7 +107,7 @@ div.csl-indent {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">Imperfect detection and community change: a modeling tutorial</a> 
+      <a href="./">If you’re rare, do I care? A modeling tutorial</a> 
         <div class="sidebar-tools-main">
     <a href="https://github.com/an-bui/community_detection_tutorial" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
 </div>
@@ -135,13 +135,13 @@ div.csl-indent {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./02_computing-indices.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Computing indices of community stability</span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Computing indices of biodiversity</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./03_community-stability-environment.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Evaluating community stability in relation to environmental variables</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Evaluating biodiversity in relation to environmental variables</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -179,7 +179,7 @@ div.csl-indent {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Imperfect detection and community change: a modeling tutorial</h1>
+<h1 class="title">If you’re rare, do I care? A modeling tutorial</h1>
 </div>
 
 
@@ -189,7 +189,7 @@ div.csl-indent {
     <div>
     <div class="quarto-title-meta-heading">Author</div>
     <div class="quarto-title-meta-contents">
-             <p>Ana Miller-ter Kuile </p>
+             <p>Ana Miller-ter Kuile and An Bui </p>
           </div>
   </div>
     
@@ -204,7 +204,7 @@ div.csl-indent {
 <h1 class="unnumbered">Preface</h1>
 <section id="description" class="level2">
 <h2 class="anchored" data-anchor-id="description">Description</h2>
-<p>This is a modeling tutorial for the supplement for Miller-ter Kuile et al.&nbsp;“Accounting for imperfect detection to reveal the importance of current and past environmental conditions for community stability”. <em>in revision</em></p>
+<p>This is a modeling tutorial for the supplement for Miller-ter Kuile et al.&nbsp;“If you’re rare, should I care? How imperfect detection changes relationships between biodiversity and global change drivers”. <em>in revision</em></p>
 <p>The purpose of this tutorial is to provide a detailed description of the modeling approaches used in the paper along with examples of the models in action on both simulated and real datasets.</p>
 </section>
 <section id="tools-youll-need" class="level2">
@@ -213,6 +213,7 @@ div.csl-indent {
 <p><a href="https://cran.rstudio.com/">Download R</a></p>
 <p>(We also recommend <a href="https://posit.co/download/rstudio-desktop/">RStudio</a>)</p>
 <p><a href="https://sourceforge.net/projects/mcmc-jags/files/">Download JAGS</a></p>
+<p>Other options are available for running Bayesian models, including <a href="https://mc-stan.org/">Stan</a> and <a href="https://r-nimble.org/">NIMBLE</a>. There is less flexibility but great usability for running multi-species occupancy models in the package <a href="https://doserlab.com/files/spoccupancy-web/"><code>spOccupancy</code></a>. Given the incorporation of uncertainty in regression models, it would be challenging to run them in programs with built-in regression model functions, but they can be built in any Bayesian modeling language/program (JAGS, Stan, BUGS, NIMBLE).</p>
 </section>
 <section id="model-description" class="level2">
 <h2 class="anchored" data-anchor-id="model-description">Model description</h2>
@@ -225,11 +226,11 @@ div.csl-indent {
 </div>
 <section id="a-multi-species-model-accounting-for-imperfect-detection" class="level3">
 <h3 class="anchored" data-anchor-id="a-multi-species-model-accounting-for-imperfect-detection">A) Multi-species model accounting for imperfect detection</h3>
-<p>This model links observed abundance or presence-absence of species in a community to detection probabilities to generate a latent “true” abundance or occupancy for each species in each site in each year. We used this model to then generate metrics of community change (beta diversity). We built these models based on previous model developments for accounting for imperfect detection in community datasets <span class="citation" data-cites="dorazio2006">(<a href="references.html#ref-dorazio2006" role="doc-biblioref">Dorazio et al. 2006</a>)</span>.</p>
+<p>This model links observed abundance or presence-absence of species in a community to detection probabilities to generate a latent “true” abundance or occupancy for each species in each site in each year. We used this model to then generate metrics of biodiversity. We built these models based on previous model developments for accounting for imperfect detection in community datasets <span class="citation" data-cites="dorazio2006">(<a href="references.html#ref-dorazio2006" role="doc-biblioref">Dorazio et al. 2006</a>)</span>.</p>
 </section>
 <section id="b-regression-model-with-environmental-covariates" class="level3">
 <h3 class="anchored" data-anchor-id="b-regression-model-with-environmental-covariates">B) Regression model with environmental covariates</h3>
-<p>This model incorporates mean and variance of community change metrics from the model in A) into a regression examining the effects of environmental covariates on community change. This model employs a stochastic antecedent modeling (SAM) framework <span class="citation" data-cites="ogle2015">(<a href="references.html#ref-ogle2015" role="doc-biblioref">Ogle et al. 2015</a>)</span> to allow environmental covariates to have immediate and lagged responses.</p>
+<p>This model incorporates mean and variance of biodiversity metrics from the model in A) into a regression examining the effects of environmental covariates on biodiversity. This model employs a stochastic antecedent modeling (SAM) framework <span class="citation" data-cites="ogle2015">(<a href="references.html#ref-ogle2015" role="doc-biblioref">Ogle et al. 2015</a>)</span> to allow environmental covariates to have immediate and lagged responses.</p>
 </section>
 </section>
 <section id="outline" class="level2">
@@ -237,8 +238,8 @@ div.csl-indent {
 <p>In the following pages, we will walk you through the model formulation as well as model code demonstrating the modeling framework.</p>
 <ol type="1">
 <li><strong>Accounting for imperfect detection</strong> walks through accounting for imperfect detection in a multi-species model</li>
-<li><strong>Computing indices of community stability</strong> illustrates how latent values from the models for imperfect detection can be used to calculate multiple indices of community stability (beta diversity)</li>
-<li><strong>Evaluating community stability in relation to environmental variables</strong> shows how to take these derived values of community change and uncertainty around them and use them in a regression that allows covariates to have immediate and lagged effects on community change</li>
+<li><strong>Computing indices of biodiversity</strong> illustrates how posterior samples for latent occupancy or abundance from the models for imperfect detection can be used to calculate multiple indices of biodiversity either inside Bayesian modeling software as derived quantities or through functions available in a variety of R packages</li>
+<li><strong>Evaluating biodiversity in relation to environmental variables</strong> shows how to take these derived values of biodiversity and uncertainty around them and use them in a regression that allows covariates to have immediate and lagged effects on biodiversity metrics</li>
 </ol>
 
 

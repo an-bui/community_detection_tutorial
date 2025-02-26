@@ -411,6 +411,6 @@ mcmcplot(model$samples)
 We have run this just for enough iterations to assess convergence (it likely hasn't converged) so that we can provide the model output for downstream tutorial steps. For your own datasets, you may need to keep running this model a few times for more iterations than we've shown above, resetting initial values based on new model runs to get this model to converge. For the datasets we evaluated in our manuscript, we set a convergence cutoff of >95% of all nodes converging at Gelman diagnostic ($\hat{R} \leq 1.2$).
 
 
-### Next: using N to compute indices of community stability
+### Next: using N, $z$, or $\psi$ to compute indices of biodiversity
 
-Next up, we'll use estimates of N for each species in each site in each year to calculate an index of community stability (beta diversity)!
+Next up, we'll use estimates of N (or $z$ or $\psi$ for an occupancy model) for each species in each site in each year to calculate indices of biodiversity!

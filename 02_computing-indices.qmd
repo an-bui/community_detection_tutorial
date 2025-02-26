@@ -1,12 +1,18 @@
 ---
-title: "Computing indices of community stability"
+title: "Computing indices of biodiversity"
 ---
 
-Now that we have N from our previous model, we can calculate a metric of community change through time. For this dataset, since we are working with abundance data, we will be using a common metric in community ecology - Bray-Curtis dissimilarlity. For presence-absence data, the most common metric is Jaccard dissimilarity, which generates species turnover metrics, including overall turnover as well as species losses and gains (@oksanen2020; @hallett2016). There are many other metrics and ways to decompose these metrics into different process-based metrics (e.g., gain and loss components), but we don't work with those here (@oksanen2020; @baselga2021).
+Now that we have N from our previous model (or $z$ or $\psi$ for an occupancy model), we can calculate metrics of biodiversity. These can include any metric commonly used to describe $\alpha$ or $\beta$ diversity and can include taxonomic, phylogenetic, and functional diversity metrics.
 
-We provide equations and example code of the two indices of community stability we used in our examples in the manuscript (Bray-Curtis and species turnover).
+Abundance-based metrics common in community ecology include Shannon diversity (taxonomic $\alpha$ diversity), Bray-Curtis dissimilarity (taxonomic $beta$ diversity), and Rao's quadratic entropy (functional $\alpha$ diversity). These can be derived from estimates of $N$ from a MSAM or from estimates of $\psi$ from an occupancy model (as pseudo-abundance data).
 
-## Computing indices of community stability
+Occurrence-based metrics common in community ecology include species richness (taxonomic $alpha$ diversity), Jaccard dissimilarity (taxonomic $beta$ diversity), and functional richness (functional $\alpha$ diversity). These can be derived from estimates of $z$ from an occupancy model, or from data simplifed from an MSAM to describe presence-absence as opposed to abundance data.
+
+Useful resources for biodiversity metrics and implementing them in R:(@oksanen2020; @hallett2016; @morris2014; @grenié2025)
+
+We provide examples of many of these in the main text and supporting information of the main text of our paper. Further, these can be generated as derived quantities within a Bayesian model or using posterior samples of the above quantities ($N$, $z$, or $\psi$) in R.
+
+## Computing indices of biodiversity
 
 ### Bray-Curtis Dissimilarity
 
@@ -32,19 +38,21 @@ Then, turnover is:
 
 $turnover = \frac{(B + C)}{(A + B + C)}$
 
+For this study (plant dataset), we decomposed turnover into "gains" and "losses" by just including either $B$ (losses) or $C$ (gains) in the denominator.
+
 ### Interpretting both metrics
 
 In both metrics, **values closer to 1 indicate that the two communities are more different** (a larger fraction of individuals or species are different between communities 1 and 2 than are shared). In our case, we are calculating these change metrics between a given survey unit in a dataset ("community") between adjacent timepoints. For most datasets, this means we are comparing communities in time *y* to time *y+1*. However, for one dataset (PFNP plants), survey intervals were \> 1 year apart, so we compared communities between adjacent time points (e.g. 2007 and 2014, 2014 and 2021).
 
 ### Notation in our paper
 
-In the paper, we define a general dissimilarity metric as $d_{t,y}$. And use the mean ($\bar{d}_{t,y}$) and variance ($Var(\bar{d}_{t,y})$) of this value as "data" in the environmental regression model.
+In the paper, we define a general biodiversity metric as $d_{t,y}$. And use the mean ($\bar{d}_{t,y}$) and variance ($Var(\bar{d}_{t,y})$) of this value as "data" in the environmental regression model.
 
-## Dissimilarity metrics in JAGS models
+## Biodiversity metrics in JAGS models
 
 ### Model code
 
-We included these metrics as "derived quantities" in our MSAM models that we then pulled from models after they had converged. You can also derive these quantities in R, which we did for the PFNP plant dataset and code to do so can be found [here](https://github.com/anamtk/long_term_community_stability/blob/main/04_nps_plants/monsoon/nps_MSAM/inputs_yrsite/MSAM_summaries.R)
+We included these metrics as "derived quantities" in our MSAM models that we then pulled from models after they had converged. You can also derive these quantities in R, which we did for the PFNP plant dataset and code to do so can be found [here]()
 
 These derived quantities come at the end of the model code that we highlighted in the previous step ("Accounting for imperfect detection"), but we do not provide the whole model here for brevity. To see the model with both components, you can look at our model file in the [MSAM tutorial folder](https://github.com/an-bui/community_detection_tutorial/tree/main/tutorials/MSAM).
 
@@ -92,9 +100,9 @@ model{
 }
 ```
 
-### Updating the model to get change metrics
+### Updating the model to get biodiversity metrics
 
-We updated our converged model for a short number of iterations to get good estimates of mean and standard deviation values for our change metrics. We then exported the mean and standard deviations for these metrics as "data" to be provided in the next model (Evaluating community stability in relation to environmental variables)
+We updated our converged model for a short number of iterations to get good estimates of mean and standard deviation values for our biodiversity metrics. We then exported the mean and standard deviations for these metrics as "data" to be provided in the next model (Evaluating biodiversity in relation to environmental variables)
 
 ```{r, eval = FALSE}
 
@@ -193,6 +201,6 @@ ggplot(stats) +
   labs(x = "Year", y = "Bray-Curtis dissimilarity \n (Posterior mean and SD)")
 ```
 
-### Next: Evaluating community stability in relation to environmental variables
+### Next: Evaluating biodiversity in relation to environmental variables
 
-Next we will take the mean and standard deviation of these community change values and incorporate them into a regression with environmental covariates to examine how these covariates shape communities.
+Next we will take the mean and standard deviation of these biodiversity values and incorporate them into a regression with environmental covariates to examine how these covariates shape communities.
