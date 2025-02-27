@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Imperfect detection and community change: a modeling tutorial - 1&nbsp; Accounting for imperfect detection</title>
+<title>If you’re rare, do I care? A modeling tutorial - 1&nbsp; Accounting for imperfect detection</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -143,7 +143,7 @@ div.csl-indent {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">Imperfect detection and community change: a modeling tutorial</a> 
+      <a href="./">If you’re rare, do I care? A modeling tutorial</a> 
         <div class="sidebar-tools-main">
     <a href="https://github.com/an-bui/community_detection_tutorial" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
 </div>
@@ -171,13 +171,13 @@ div.csl-indent {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./02_computing-indices.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Computing indices of community stability</span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Computing indices of biodiversity</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./03_community-stability-environment.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Evaluating community stability in relation to environmental variables</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Evaluating biodiversity in relation to environmental variables</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -206,7 +206,7 @@ div.csl-indent {
   <li><a href="#the-model-in-action" id="toc-the-model-in-action" class="nav-link" data-scroll-target="#the-model-in-action"><span class="header-section-number">1.2</span> The model in action</a>
   <ul class="collapse">
   <li><a href="#running-the-model" id="toc-running-the-model" class="nav-link" data-scroll-target="#running-the-model"><span class="header-section-number">1.2.1</span> Running the model</a></li>
-  <li><a href="#next-using-n-to-compute-indices-of-community-stability" id="toc-next-using-n-to-compute-indices-of-community-stability" class="nav-link" data-scroll-target="#next-using-n-to-compute-indices-of-community-stability"><span class="header-section-number">1.2.2</span> Next: using N to compute indices of community stability</a></li>
+  <li><a href="#next-using-n-z-or-psi-to-compute-indices-of-biodiversity" id="toc-next-using-n-z-or-psi-to-compute-indices-of-biodiversity" class="nav-link" data-scroll-target="#next-using-n-z-or-psi-to-compute-indices-of-biodiversity"><span class="header-section-number">1.2.2</span> Next: using N, <span class="math inline">\(z\)</span>, or <span class="math inline">\(\psi\)</span> to compute indices of biodiversity</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -454,14 +454,14 @@ div.csl-indent {
 <h3 data-number="1.2.1" class="anchored" data-anchor-id="running-the-model"><span class="header-section-number">1.2.1</span> Running the model</h3>
 <section id="the-model-file" class="level4" data-number="1.2.1.1">
 <h4 data-number="1.2.1.1" class="anchored" data-anchor-id="the-model-file"><span class="header-section-number">1.2.1.1</span> The model file</h4>
-<p>You will need to provide a path to the model file (which is its own R script, written in JAGS/BUGS language, so it won’t actually run in R). You can find ours <a href="https://github.com/an-bui/community_detection_tutorial/blob/main/tutorials/MSAM/code/MSAM_model.R">here</a>. You will see that we define the path to this model in our model running script below.</p>
+<p>You will need to provide a path to the model file (which is its own R script, written in JAGS/BUGS language, so it won’t actually run in R). You can find ours <a href="https://github.com/an-bui/community_detection_tutorial/blob/main/tutorials/01_imperfect_detect/code/MSAM_model.R">here</a>. You will see that we define the path to this model in our model running script below.</p>
 </section>
 <section id="the-data-list" class="level4" data-number="1.2.1.2">
 <h4 data-number="1.2.1.2" class="anchored" data-anchor-id="the-data-list"><span class="header-section-number">1.2.1.2</span> The data list</h4>
-<p>To run the model, we will need to provide JAGS with a data list, which you can find <a href="https://github.com/an-bui/community_detection_tutorial/tree/main/tutorials/MSAM/data/model_inputs">here</a>. We have code on how to prepare the data list <a href="https://github.com/an-bui/community_detection_tutorial/blob/main/tutorials/MSAM/code/MSAM_data_simulation.R">here</a>.</p>
+<p>To run the model, we will need to provide JAGS with a data list, which you can find <a href="https://github.com/an-bui/community_detection_tutorial/tree/main/tutorials/01_imperfect_detect/data/model_inputs">here</a>. We have code on how to prepare the data list <a href="https://github.com/an-bui/community_detection_tutorial/blob/main/tutorials/01_imperfect_detect/code/MSAM_data_simulation.R">here</a>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>data_list <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="fu">here</span>(<span class="st">'tutorials'</span>,</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>                          <span class="st">"MSAM"</span>,</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>                          <span class="st">"01_imperfect_detect"</span>,</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>                          <span class="st">'data'</span>,</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>                          <span class="st">'model_inputs'</span>,</span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>                          <span class="st">'MSAM_data_list.RDS'</span>))</span>
@@ -486,7 +486,7 @@ div.csl-indent {
 </section>
 <section id="the-script-to-run-the-model" class="level4" data-number="1.2.1.3">
 <h4 data-number="1.2.1.3" class="anchored" data-anchor-id="the-script-to-run-the-model"><span class="header-section-number">1.2.1.3</span> The script to run the model</h4>
-<p>We’ll run the model using the <code>jagsUI</code> wrapper package. You can find this script <a href="https://github.com/an-bui/community_detection_tutorial/blob/main/tutorials/MSAM/code/MSAM_wrapper_script.R">here</a>, and the general code to run a JAGS model is provided here:</p>
+<p>We’ll run the model using the <code>jagsUI</code> wrapper package. You can find this script <a href="https://github.com/an-bui/community_detection_tutorial/blob/main/tutorials/01_imperfect_detect/code/MSAM_wrapper_script.R">here</a>, and the general code to run a JAGS model is provided here:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load packages -----------------------------------------------------------</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -506,7 +506,7 @@ div.csl-indent {
 <span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Load data -----------------------------------------------------------</span></span>
 <span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>data_list <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="fu">here</span>(<span class="st">'tutorials'</span>,</span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>                          <span class="st">"MSAM"</span>,</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>                          <span class="st">"01_imperfect_detect"</span>,</span>
 <span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>                          <span class="st">'data'</span>,</span>
 <span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>                          <span class="st">'model_inputs'</span>,</span>
 <span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>                          <span class="st">'MSAM_data_list.RDS'</span>))</span>
@@ -515,7 +515,7 @@ div.csl-indent {
 <span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a><span class="co">#The model file is here:</span></span>
 <span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>model_file <span class="ot">&lt;-</span> <span class="fu">here</span>(<span class="st">'tutorials'</span>,</span>
-<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>                   <span class="st">"MSAM"</span>,</span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>                   <span class="st">"01_imperfect_detect"</span>,</span>
 <span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>                   <span class="st">'code'</span>,</span>
 <span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>                   <span class="st">'MSAM_model.R'</span>)</span>
 <span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a></span>
@@ -540,7 +540,7 @@ div.csl-indent {
 <span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a><span class="co">#this was also generated when we simulated data - it aids in </span></span>
 <span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a><span class="co">#convergence when we have known values</span></span>
 <span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a>inits_list <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="fu">here</span>(<span class="st">'tutorials'</span>,</span>
-<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a>                           <span class="st">"MSAM"</span>,</span>
+<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a>                           <span class="st">"01_imperfect_detect"</span>,</span>
 <span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a>                           <span class="st">'data'</span>,</span>
 <span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a>                           <span class="st">"model_inputs"</span>,</span>
 <span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a>                           <span class="st">'MSAM_inits_list.RDS'</span>))</span>
@@ -600,9 +600,9 @@ div.csl-indent {
 <p>We have run this just for enough iterations to assess convergence (it likely hasn’t converged) so that we can provide the model output for downstream tutorial steps. For your own datasets, you may need to keep running this model a few times for more iterations than we’ve shown above, resetting initial values based on new model runs to get this model to converge. For the datasets we evaluated in our manuscript, we set a convergence cutoff of &gt;95% of all nodes converging at Gelman diagnostic (<span class="math inline">\(\hat{R} \leq 1.2\)</span>).</p>
 </section>
 </section>
-<section id="next-using-n-to-compute-indices-of-community-stability" class="level3" data-number="1.2.2">
-<h3 data-number="1.2.2" class="anchored" data-anchor-id="next-using-n-to-compute-indices-of-community-stability"><span class="header-section-number">1.2.2</span> Next: using N to compute indices of community stability</h3>
-<p>Next up, we’ll use estimates of N for each species in each site in each year to calculate an index of community stability (beta diversity)!</p>
+<section id="next-using-n-z-or-psi-to-compute-indices-of-biodiversity" class="level3" data-number="1.2.2">
+<h3 data-number="1.2.2" class="anchored" data-anchor-id="next-using-n-z-or-psi-to-compute-indices-of-biodiversity"><span class="header-section-number">1.2.2</span> Next: using N, <span class="math inline">\(z\)</span>, or <span class="math inline">\(\psi\)</span> to compute indices of biodiversity</h3>
+<p>Next up, we’ll use estimates of N (or <span class="math inline">\(z\)</span> or <span class="math inline">\(\psi\)</span> for an occupancy model) for each species in each site in each year to calculate indices of biodiversity!</p>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
@@ -858,7 +858,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   </div>
   <div class="nav-page nav-page-next">
       <a href="./02_computing-indices.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Computing indices of community stability</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Computing indices of biodiversity</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
