@@ -10,7 +10,7 @@ Occurrence-based metrics common in community ecology include species richness (t
 
 Useful resources for biodiversity metrics and implementing them in R:(@oksanen2020; @hallett2016; @morris2014; @grenié2025)
 
-We provide examples of many of these in the main text and supporting information of the main text of our paper. Further, these can be generated as derived quantities within a Bayesian model or using posterior samples of the above quantities ($N$, $z$, or $\psi$) in R.
+We provide examples of many of these in the main text and supporting information of our paper. Further, these can be generated as derived quantities within a Bayesian model or using posterior samples of the above quantities ($N$, $z$, or $\psi$) in R.
 
 ## Computing indices of biodiversity
 
@@ -52,9 +52,9 @@ In the paper, we define a general biodiversity metric as $d_{t,y}$. And use the 
 
 ### Model code
 
-We included these metrics as "derived quantities" in our MSAM models that we then pulled from models after they had converged. You can also derive these quantities in R, which we did for the PFNP plant dataset and code to do so can be found [here]()
+We can include these metrics as "derived quantities" in our MSAM models that we can pull from models after they have converged. You can also derive these quantities in R, and we provide an example in the [code](https://github.com/an-bui/community_detection_tutorial/tree/main/tutorials/02_diversity_calcs/02_grasshopper_calculate_bray.R) in the tutorial folder. 
 
-These derived quantities come at the end of the model code that we highlighted in the previous step ("Accounting for imperfect detection"), but we do not provide the whole model here for brevity. To see the model with both components, you can look at our model file in the [MSAM tutorial folder](https://github.com/an-bui/community_detection_tutorial/tree/main/tutorials/MSAM).
+When incorporating derived quantities into JAGS code, these quantities come at the end of the model code that we highlighted in the previous step ("Accounting for imperfect detection"), but we do not provide the whole model here for brevity. To see the model with both components, you can look at our model file in the [imperfect detection tutorial folder](https://github.com/an-bui/community_detection_tutorial/tree/main/tutorials/01_imperfect_detect).
 
 ```{r, eval=FALSE}
 model{
@@ -121,7 +121,7 @@ for(i in package.list){library(i, character.only = T)}
 # Load converged model -----------------------------------------------------------
 
 model <- readRDS(here('tutorials',
-                      "MSAM",
+                      "01_imperfect_detect",
                       'data',
                       'model_outputs',
                       'MSAM_model_output.RDS'))
@@ -159,7 +159,7 @@ stats <- as.data.frame(sum$statistics) %>%
 
 ```
 
-We have saved this dataframe in the [MSAM tutorial folder](https://github.com/an-bui/community_detection_tutorial/tree/main/tutorials/MSAM/data/model_outputs).
+We have saved this dataframe in the [imperfect detection tutorial folder](https://github.com/an-bui/community_detection_tutorial/tree/main/tutorials/01_imperfect_detect/data/model_outputs).
 
 ```{r, include = FALSE}
 # Load packages -----------------------------------------------------------
@@ -174,7 +174,7 @@ if(length(new.packages)) install.packages(new.packages)
 for(i in package.list){library(i, character.only = T)}
 
 stats <- readRDS(here('tutorials',
-                      "MSAM",
+                      "01_imperfect_detect",
                     "data",
                     "model_outputs",
                     "MSAM_bray_summary.RDS"))

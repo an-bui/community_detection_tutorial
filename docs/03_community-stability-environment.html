@@ -290,31 +290,31 @@ div.csl-indent {
 <span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>    <span class="co">#site random effect and the weighted antecedent effects of two covariates,</span></span>
 <span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>    <span class="co">#plant biomass and temperature</span></span>
 <span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>      <span class="fu">logit</span>(mu[i]) <span class="ot">&lt;-</span> b0.site[Site.ID[i]] <span class="sc">+</span></span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>        b[<span class="dv">1</span>]<span class="sc">*</span>AntPlant[i] <span class="sc">+</span></span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>        b[<span class="dv">2</span>]<span class="sc">*</span>AntTemp[i]</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>        b[<span class="dv">1</span>]<span class="sc">*</span>AntCov1[i] <span class="sc">+</span></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>        b[<span class="dv">2</span>]<span class="sc">*</span>AntCov2[i]</span>
 <span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>      </span>
 <span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>      <span class="co">#-------------------------------------## </span></span>
 <span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>      <span class="co"># SAM summing </span><span class="al">###</span></span>
 <span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>      <span class="co">#-------------------------------------##</span></span>
 <span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>      </span>
 <span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>      <span class="co">#summing the antecedent values</span></span>
-<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>      AntPlant[i] <span class="ot">&lt;-</span> <span class="fu">sum</span>(PlantTemp[i,]) <span class="co">#summing across the total number of antecedent years</span></span>
-<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>      AntTemp[i] <span class="ot">&lt;-</span> <span class="fu">sum</span>(TempTemp[i,]) <span class="co">#summing across the total num of antecedent months</span></span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>      AntCov1[i] <span class="ot">&lt;-</span> <span class="fu">sum</span>(Cov1Temp[i,]) <span class="co">#summing across the total number of antecedent years</span></span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>      AntCov2[i] <span class="ot">&lt;-</span> <span class="fu">sum</span>(Cov2Temp[i,]) <span class="co">#summing across the total num of antecedent months</span></span>
 <span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>      <span class="co">#Generating each year's weight to sum above</span></span>
-<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>      <span class="cf">for</span>(t <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n.plantlag){ <span class="co">#number of time steps we're going back in the past</span></span>
-<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>        PlantTemp[i,t] <span class="ot">&lt;-</span> Plant[i,t]<span class="sc">*</span>wA[t] </span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>      <span class="cf">for</span>(t <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n.lag1){ <span class="co">#number of time steps we're going back in the past</span></span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>        Cov1Temp[i,t] <span class="ot">&lt;-</span> Cov1[i,t]<span class="sc">*</span>wA[t] </span>
 <span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>      </span>
 <span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>        <span class="co">#imputing missing data</span></span>
-<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>        Plant[i,t] <span class="sc">~</span> <span class="fu">dnorm</span>(mu.plant, tau.plant)</span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>        Cov1[i,t] <span class="sc">~</span> <span class="fu">dnorm</span>(mu.cov1, tau.cov1)</span>
 <span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>      }</span>
 <span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a>        </span>
 <span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a>      <span class="co">#generating each month's weight to sum above</span></span>
-<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a>      <span class="cf">for</span>(t <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n.templag){ <span class="co">#number of time steps we're going back in the past</span></span>
-<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a>        TempTemp[i,t] <span class="ot">&lt;-</span> Temp[i,t]<span class="sc">*</span>wB[t] </span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a>      <span class="cf">for</span>(t <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n.lag2){ <span class="co">#number of time steps we're going back in the past</span></span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a>        Cov2Temp[i,t] <span class="ot">&lt;-</span> Cov2[i,t]<span class="sc">*</span>wB[t] </span>
 <span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a>        <span class="co">#missing data</span></span>
-<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a>        Temp[i,t] <span class="sc">~</span> <span class="fu">dnorm</span>(mu.temp, tau.temp)</span>
+<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a>        Cov2[i,t] <span class="sc">~</span> <span class="fu">dnorm</span>(mu.cov2, tau.cov2)</span>
 <span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a>      }</span>
 <span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a>      </span>
 <span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a>      <span class="co">#-------------------------------------## </span></span>
@@ -340,14 +340,14 @@ div.csl-indent {
 <span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a>  <span class="co">#Employing "delta trick" to give vector of weights dirichlet priors</span></span>
 <span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a>  <span class="co">#this is doing the dirichlet in two steps </span></span>
 <span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a>  <span class="co">#see Ogle et al. 2015 SAM model paper in Ecology Letters</span></span>
-<span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(t <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n.plantlag){ <span class="co">#for the total number of lags</span></span>
+<span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(t <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n.lag1){ <span class="co">#for the total number of lags</span></span>
 <span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a>    <span class="co">#the weights for kelp - getting the weights to sum to 1</span></span>
 <span id="cb1-93"><a href="#cb1-93" aria-hidden="true" tabindex="-1"></a>    wA[t] <span class="ot">&lt;-</span> deltaA[t]<span class="sc">/</span>sumA</span>
 <span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a>    <span class="co">#and follow a relatively uninformative gamma prior</span></span>
 <span id="cb1-95"><a href="#cb1-95" aria-hidden="true" tabindex="-1"></a>    deltaA[t] <span class="sc">~</span> <span class="fu">dgamma</span>(<span class="dv">1</span>,<span class="dv">1</span>)</span>
 <span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a>    </span>
 <span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a>    <span class="co">#to look at how weights accumulate through time</span></span>
-<span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a>    cumm.plantwt[t] <span class="ot">&lt;-</span> <span class="fu">sum</span>(wA[<span class="dv">1</span><span class="sc">:</span>t])</span>
+<span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a>    cumm.wt1[t] <span class="ot">&lt;-</span> <span class="fu">sum</span>(wA[<span class="dv">1</span><span class="sc">:</span>t])</span>
 <span id="cb1-99"><a href="#cb1-99" aria-hidden="true" tabindex="-1"></a>  }</span>
 <span id="cb1-100"><a href="#cb1-100" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb1-101"><a href="#cb1-101" aria-hidden="true" tabindex="-1"></a>  <span class="co">#Sum of the weights for temp lag</span></span>
@@ -356,14 +356,14 @@ div.csl-indent {
 <span id="cb1-104"><a href="#cb1-104" aria-hidden="true" tabindex="-1"></a>  <span class="co">#Employing "delta trick" to give vector of weights dirichlet priors</span></span>
 <span id="cb1-105"><a href="#cb1-105" aria-hidden="true" tabindex="-1"></a>  <span class="co">#this is doing the dirichlet in two steps </span></span>
 <span id="cb1-106"><a href="#cb1-106" aria-hidden="true" tabindex="-1"></a>  <span class="co">#see Ogle et al. 2015 SAM model paper in Ecology Letters</span></span>
-<span id="cb1-107"><a href="#cb1-107" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(t <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n.templag){ <span class="co">#for the total number of lags</span></span>
+<span id="cb1-107"><a href="#cb1-107" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(t <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n.lag2){ <span class="co">#for the total number of lags</span></span>
 <span id="cb1-108"><a href="#cb1-108" aria-hidden="true" tabindex="-1"></a>    <span class="co">#the weights for kelp - getting the weights to sum to 1</span></span>
 <span id="cb1-109"><a href="#cb1-109" aria-hidden="true" tabindex="-1"></a>    wB[t] <span class="ot">&lt;-</span> deltaB[t]<span class="sc">/</span>sumB</span>
 <span id="cb1-110"><a href="#cb1-110" aria-hidden="true" tabindex="-1"></a>    <span class="co">#and follow a relatively uninformative gamma prior</span></span>
 <span id="cb1-111"><a href="#cb1-111" aria-hidden="true" tabindex="-1"></a>    deltaB[t] <span class="sc">~</span> <span class="fu">dgamma</span>(<span class="dv">1</span>,<span class="dv">1</span>)</span>
 <span id="cb1-112"><a href="#cb1-112" aria-hidden="true" tabindex="-1"></a>    </span>
 <span id="cb1-113"><a href="#cb1-113" aria-hidden="true" tabindex="-1"></a>    <span class="co">#to look at cummulative weigths through time</span></span>
-<span id="cb1-114"><a href="#cb1-114" aria-hidden="true" tabindex="-1"></a>    cumm.tempwt[t] <span class="ot">&lt;-</span> <span class="fu">sum</span>(wB[<span class="dv">1</span><span class="sc">:</span>t])</span>
+<span id="cb1-114"><a href="#cb1-114" aria-hidden="true" tabindex="-1"></a>    cumm.wt2[t] <span class="ot">&lt;-</span> <span class="fu">sum</span>(wB[<span class="dv">1</span><span class="sc">:</span>t])</span>
 <span id="cb1-115"><a href="#cb1-115" aria-hidden="true" tabindex="-1"></a>  }</span>
 <span id="cb1-116"><a href="#cb1-116" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb1-117"><a href="#cb1-117" aria-hidden="true" tabindex="-1"></a>  <span class="co">#BETA PRIORS</span></span>
@@ -391,12 +391,12 @@ div.csl-indent {
 <span id="cb1-139"><a href="#cb1-139" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-140"><a href="#cb1-140" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-141"><a href="#cb1-141" aria-hidden="true" tabindex="-1"></a>  <span class="co">#MISSING DATA PRIORS</span></span>
-<span id="cb1-142"><a href="#cb1-142" aria-hidden="true" tabindex="-1"></a>  mu.plant <span class="sc">~</span> <span class="fu">dunif</span>(<span class="sc">-</span><span class="dv">10</span>, <span class="dv">10</span>)</span>
-<span id="cb1-143"><a href="#cb1-143" aria-hidden="true" tabindex="-1"></a>  sig.plant <span class="sc">~</span> <span class="fu">dunif</span>(<span class="dv">0</span>, <span class="dv">20</span>)</span>
-<span id="cb1-144"><a href="#cb1-144" aria-hidden="true" tabindex="-1"></a>  tau.plant <span class="ot">&lt;-</span> <span class="fu">pow</span>(sig.plant, <span class="sc">-</span><span class="dv">2</span>)</span>
-<span id="cb1-145"><a href="#cb1-145" aria-hidden="true" tabindex="-1"></a>  mu.temp <span class="sc">~</span> <span class="fu">dunif</span>(<span class="sc">-</span><span class="dv">10</span>, <span class="dv">10</span>)</span>
-<span id="cb1-146"><a href="#cb1-146" aria-hidden="true" tabindex="-1"></a>  sig.temp <span class="sc">~</span> <span class="fu">dunif</span>(<span class="dv">0</span>, <span class="dv">20</span>)</span>
-<span id="cb1-147"><a href="#cb1-147" aria-hidden="true" tabindex="-1"></a>  tau.temp <span class="ot">&lt;-</span> <span class="fu">pow</span>(sig.temp, <span class="sc">-</span><span class="dv">2</span>)</span>
+<span id="cb1-142"><a href="#cb1-142" aria-hidden="true" tabindex="-1"></a>  mu.cov1 <span class="sc">~</span> <span class="fu">dunif</span>(<span class="sc">-</span><span class="dv">10</span>, <span class="dv">10</span>)</span>
+<span id="cb1-143"><a href="#cb1-143" aria-hidden="true" tabindex="-1"></a>  sig.cov1 <span class="sc">~</span> <span class="fu">dunif</span>(<span class="dv">0</span>, <span class="dv">20</span>)</span>
+<span id="cb1-144"><a href="#cb1-144" aria-hidden="true" tabindex="-1"></a>  tau.cov1 <span class="ot">&lt;-</span> <span class="fu">pow</span>(sig.cov1, <span class="sc">-</span><span class="dv">2</span>)</span>
+<span id="cb1-145"><a href="#cb1-145" aria-hidden="true" tabindex="-1"></a>  mu.cov2 <span class="sc">~</span> <span class="fu">dunif</span>(<span class="sc">-</span><span class="dv">10</span>, <span class="dv">10</span>)</span>
+<span id="cb1-146"><a href="#cb1-146" aria-hidden="true" tabindex="-1"></a>  sig.cov2 <span class="sc">~</span> <span class="fu">dunif</span>(<span class="dv">0</span>, <span class="dv">20</span>)</span>
+<span id="cb1-147"><a href="#cb1-147" aria-hidden="true" tabindex="-1"></a>  tau.cov2 <span class="ot">&lt;-</span> <span class="fu">pow</span>(sig.cov2, <span class="sc">-</span><span class="dv">2</span>)</span>
 <span id="cb1-148"><a href="#cb1-148" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb1-149"><a href="#cb1-149" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -404,65 +404,71 @@ div.csl-indent {
 </section>
 <section id="the-model-in-action" class="level2" data-number="3.2">
 <h2 data-number="3.2" class="anchored" data-anchor-id="the-model-in-action"><span class="header-section-number">3.2</span> The model in action</h2>
-<p>Because we have greatly reduced the dimensionality of our community dataset by deriving a change metric for each site in each year, <em>y</em> to the next year <em>y+1</em>, the models run efficiently enough that we can use one of the case studies from the paper in this tutorial. We will demonstrate the utility of this model for the <a href="https://sbclter.msi.ucsb.edu/data/catalog/package/?package=knb-lter-sbc.17">SBC Fish LTER dataset</a>. This LTER site also has yearly data on <a href="https://sbclter.msi.ucsb.edu/data/catalog/package/?package=knb-lter-sbc.18">kelp biomass</a> and <a href="https://sbclter.msi.ucsb.edu/data/catalog/package/?package=knb-lter-sbc.13">bottom temperature</a> data from data loggers, which we used as environmental covariates in this model.</p>
+<p>Because we have greatly reduced the dimensionality of our community dataset by deriving a change metric for each site in each year, <em>y</em> to the next year <em>y+1</em>, the models run efficiently enough that we can use real data for this tutorial. We will demonstrate the utility of this model for the <a href="https://sevlter.unm.edu/grasshopper/">grasshopper dataset</a> from Sevilleta LTER used in our examples in the paper. This LTER site also has high-resolution information for temperature, precipitation, and plant biomass.</p>
 <p>This dataset has:</p>
 <ul>
-<li><strong>43 communities (survey transects)</strong> which have change data for</li>
-<li><strong>11 - 22 years</strong>, depending on the site and we calculated</li>
+<li><strong>60 communities (survey transects)</strong> which have change data for</li>
+<li><strong>27 years</strong>, and we calculated</li>
 <li><strong>Bray-Curtis dissimilarity</strong> for this count dataset</li>
-<li><strong>11 seasons of temperature data</strong> and</li>
-<li><strong>6 years of plant data</strong> as covariates</li>
+<li><strong>6 seasons of temperature and precipitation data</strong> and</li>
+<li><strong>11 seasons of plant data</strong> as covariates</li>
 </ul>
-<p>In this dataset, we are evaluating how Bray-Curtis dissimilarity through time is shaped by the covariates of kelp biomass and temperature.</p>
+<p>In this dataset, we are evaluating how Bray-Curtis dissimilarity through time is shaped by the covariates of temperature, precipitation, and plant biomass.</p>
 <p>Again, to run the model in R and JAGS, we will need:</p>
 <ul>
 <li>The model file</li>
 <li>The data list</li>
 <li>A script to wrap JAGS in R</li>
 </ul>
-<p>You can find all of these, along with the tidy data and script used to prep the data list for this example, in the <a href="https://github.com/an-bui/community_detection_tutorial/tree/main/tutorials/SAM">SAM tutorial folder</a></p>
+<p>You can find all of these, along with the tidy data and script used to prep the data list for this example, in the <a href="https://github.com/an-bui/community_detection_tutorial/tree/main/tutorials/03_beta_regression">beta regression tutorial folder</a></p>
 <section id="running-the-model" class="level3" data-number="3.2.1">
 <h3 data-number="3.2.1" class="anchored" data-anchor-id="running-the-model"><span class="header-section-number">3.2.1</span> Running the model</h3>
 <section id="the-model-file" class="level4" data-number="3.2.1.1">
 <h4 data-number="3.2.1.1" class="anchored" data-anchor-id="the-model-file"><span class="header-section-number">3.2.1.1</span> The model file</h4>
-<p>You will need to provide a path to the model file (which is its own R script, written in JAGS/BUGS language, so it won’t actually run in R). You can find ours <a href="https://github.com/an-bui/community_detection_tutorial/blob/main/tutorials/SAM/code/SAM_model.R">here</a>. You will see that we define the path to this model in our model running script below.</p>
+<p>You will need to provide a path to the model file (which is its own R script, written in JAGS/BUGS language, so it won’t actually run in R). You can find ours <a href="https://github.com/an-bui/community_detection_tutorial/blob/main/tutorials/03_beta_regression/code/grasshopper_betareg_model.R">here</a>. You will see that we define the path to this model in our model running script below.</p>
 </section>
 <section id="the-data-list" class="level4" data-number="3.2.1.2">
 <h4 data-number="3.2.1.2" class="anchored" data-anchor-id="the-data-list"><span class="header-section-number">3.2.1.2</span> The data list</h4>
-<p>To run the model, we will need to provide JAGS with a data list, which you can find <a href="https://github.com/an-bui/community_detection_tutorial/tree/main/tutorials/SAM/data/model_inputs">here</a>. We have code on how to prepare the data list <a href="https://github.com/an-bui/community_detection_tutorial/blob/main/tutorials/SAM/code/SAM_data_list_prep.R">here</a>.</p>
+<p>To run the model, we will need to provide JAGS with a data list, which you can find <a href="https://github.com/an-bui/community_detection_tutorial/tree/main/tutorials/03_beta_regression/data/model_inputs">here</a>. We have code on how to prepare the data list <a href="https://github.com/an-bui/community_detection_tutorial/blob/main/tutorials/03_beta_regression/code/grasshopper_betareg_data_prep.R">here</a>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>data_list <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="fu">here</span>(<span class="st">'tutorials'</span>,</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>                          <span class="st">'SAM'</span>,</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>                          <span class="st">'03_beta_regression'</span>,</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>                          <span class="st">'data'</span>,</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>                          <span class="st">"model_inputs"</span>,</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>                          <span class="st">"SAM_input_data.RDS"</span>))</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>                          <span class="st">"grasshopper_betareg_input_data_list.RDS"</span>))</span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(data_list)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>List of 9
- $ n.data      : int 856
- $ n.sites     : int 11
- $ Site.ID     : Named num [1:856] 4 4 4 5 5 5 5 5 5 5 ...
-  ..- attr(*, "names")= chr [1:856] "SITE1" "SITE2" "SITE3" "SITE4" ...
- $ d           : num [1:856] 0.517 0.521 0.51 0.416 0.401 ...
- $ var.estimate: num [1:856] 0.01623 0.0148 0.0161 0.00984 0.0099 ...
- $ n.plantlag  : int 6
- $ Plant       : num [1:856, 1:6] -0.7964 -0.7517 -0.8167 0.0222 -0.8167 ...
+<pre><code>List of 13
+ $ n.data      : int 1260
+ $ n.webs      : int 10
+ $ n.templag   : int 6
+ $ n.npplag    : int 11
+ $ n.pptlag    : int 6
+ $ n.transects : int 60
+ $ bray        : num [1:1260] 0.26 0.261 0.283 0.339 0.425 ...
+ $ var.estimate: num [1:1260] 0.00234 0.00347 0.00221 0.00204 0.00278 ...
+ $ Web.ID      : num [1:1260] 1 1 1 1 1 1 1 1 1 1 ...
+ $ Transect.ID : int [1:1260] 1 1 1 1 1 1 1 1 1 1 ...
+ $ Temp        : num [1:1260, 1:6] -0.845 -1.009 -1.06 -1.031 -0.971 ...
   ..- attr(*, "dimnames")=List of 2
   .. ..$ : NULL
-  .. ..$ : chr [1:6] "DRY_GM2" "DRY_GM2_l1" "DRY_GM2_l2" "DRY_GM2_l3" ...
- $ n.templag   : int 11
- $ Temp        : num [1:856, 1:11] NA NA NA NA NA NA NA NA NA NA ...
+  .. ..$ : chr [1:6] "Temp" "Temp_l1" "Temp_l2" "Temp_l3" ...
+ $ PPT         : num [1:1260, 1:6] 0.771 0.534 0.499 1.148 0.211 ...
   ..- attr(*, "dimnames")=List of 2
   .. ..$ : NULL
-  .. ..$ : chr [1:11] "TEMP_C" "TEMP_C_l1" "TEMP_C_l2" "TEMP_C_l3" ...</code></pre>
+  .. ..$ : chr [1:6] "PPT" "PPT_l1" "PPT_l2" "PPT_l3" ...
+ $ NPP         : num [1:1260, 1:11] -0.4807 -0.8532 -0.2417 0.0536 -0.8767 ...
+  ..- attr(*, "dimnames")=List of 2
+  .. ..$ : NULL
+  .. ..$ : chr [1:11] "NPP" "NPP_l1" "NPP_l2" "NPP_l3" ...</code></pre>
 </div>
 </div>
 <p>As you can see, this data list includes indexing numbers, vectors, matrices, and arrays to pass to JAGS.</p>
 </section>
 <section id="the-script-to-run-the-model" class="level4" data-number="3.2.1.3">
 <h4 data-number="3.2.1.3" class="anchored" data-anchor-id="the-script-to-run-the-model"><span class="header-section-number">3.2.1.3</span> The script to run the model</h4>
-<p>Just like with the imperfect detection model, we’ll run the model using the <code>jagsUI</code> wrapper package. You can find this script <a href="https://github.com/an-bui/community_detection_tutorial/blob/main/tutorials/SAM/code/SAM_wrapper_script.R">here</a>, and the general code to run a JAGS model is provided here:</p>
+<p>Just like with the imperfect detection model, we’ll run the model using the <code>jagsUI</code> wrapper package. You can find this script <a href="https://github.com/an-bui/community_detection_tutorial/blob/main/tutorials/03_beta_regression/code/grasshopper_betareg_wrapper_script.R">here</a>, and the general code to run a JAGS model is provided here:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load packages ---------------------------------------------------------------</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -470,7 +476,7 @@ div.csl-indent {
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>package.list <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"here"</span>, <span class="st">"tidyverse"</span>, <span class="co">#general packages for data input/manipulation</span></span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>                  <span class="st">"jagsUI"</span>, <span class="co">#to run JAGS models</span></span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>                  <span class="st">'mcmcplots'</span>, <span class="co">#to look at trace plots</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>                  <span class="st">"coda"</span>) <span class="co">#to evaluate convergence</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>                  <span class="st">"coda"</span>,<span class="st">'patchwork'</span>) <span class="co">#to evaluate convergence</span></span>
 <span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>                   </span>
 <span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="do">## Installing them if they aren't already on the computer</span></span>
@@ -485,23 +491,23 @@ div.csl-indent {
 <span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Load data ---------------------------------------------------------------</span></span>
 <span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>data_list <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="fu">here</span>(<span class="st">'tutorials'</span>,</span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>                          <span class="st">'SAM'</span>,</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>                          <span class="st">'03_beta_regression'</span>,</span>
 <span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>                          <span class="st">'data'</span>,</span>
 <span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>                          <span class="st">"model_inputs"</span>,</span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>                          <span class="st">"SAM_input_data.RDS"</span>))</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>                          <span class="st">"grasshopper_betareg_input_data_list.RDS"</span>))</span>
 <span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a><span class="co"># Define model path -------------------------------------------------------</span></span>
 <span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">here</span>(<span class="st">'tutorials'</span>,</span>
-<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>              <span class="st">'SAM'</span>,</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>              <span class="st">'03_beta_regression'</span>,</span>
 <span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>              <span class="st">'code'</span>,</span>
-<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>              <span class="st">'SAM_model.R'</span>)</span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>              <span class="st">'grasshopper_betareg_model.R'</span>)</span>
 <span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a><span class="co"># Parameters to save ------------------------------------------------------</span></span>
 <span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a><span class="co">#these parameters we can track to assess convergence</span></span>
-<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>params <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">'b0.site'</span>, <span class="co">#site-level intercepts</span></span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>params <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">'b0.web'</span>, <span class="co">#site-level intercepts</span></span>
 <span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>            <span class="st">'b0'</span>, <span class="co">#overall intercept</span></span>
 <span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>            <span class="st">'b'</span>, <span class="co">#covariate effects</span></span>
 <span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>            <span class="st">'wA'</span>, <span class="co">#plant biomass weights vector</span></span>
@@ -517,16 +523,15 @@ div.csl-indent {
 <span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a>                    <span class="at">parameters.to.save =</span> params,</span>
 <span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a>                    <span class="at">parallel =</span> <span class="cn">TRUE</span>,</span>
 <span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a>                    <span class="at">n.chains =</span> <span class="dv">3</span>,</span>
-<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a>                    <span class="at">n.burnin =</span><span class="dv">1500</span>,</span>
-<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a>                    <span class="at">n.iter =</span> <span class="dv">5000</span>,</span>
-<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a>                    <span class="at">DIC =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a>                    <span class="at">n.iter =</span> <span class="dv">350</span>,</span>
+<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a>                    <span class="at">DIC =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a><span class="co"># Check convergence -------------------------------------------------------</span></span>
-<span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb4-61"><a href="#cb4-61" aria-hidden="true" tabindex="-1"></a><span class="fu">mcmcplot</span>(mod<span class="sc">$</span>samples)</span>
-<span id="cb4-62"><a href="#cb4-62" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb4-63"><a href="#cb4-63" aria-hidden="true" tabindex="-1"></a><span class="fu">gelman.diag</span>(mod<span class="sc">$</span>samples, <span class="at">multivariate =</span> F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a><span class="co"># Check convergence -------------------------------------------------------</span></span>
+<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a><span class="fu">mcmcplot</span>(mod<span class="sc">$</span>samples)</span>
+<span id="cb4-61"><a href="#cb4-61" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb4-62"><a href="#cb4-62" aria-hidden="true" tabindex="-1"></a><span class="fu">gelman.diag</span>(mod<span class="sc">$</span>samples, <span class="at">multivariate =</span> F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Again, depending on your computer and/or datasets, you may need to re-run this model with initial values for root nodes and use cloud computing to run this model.</p>
 </section>
@@ -537,80 +542,96 @@ div.csl-indent {
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>sum <span class="ot">&lt;-</span> <span class="fu">summary</span>(mod<span class="sc">$</span>samples)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>We can look at estimated values from this summary to assess how plant biomass and temperature impact SBC LTER fish communities.</p>
+<p>This model requires some re-running with initial values, which we have done and provide a summary from the converged model in the tutorial folder. We can look at estimated values from this summary to assess how temperature, precipitation, and plant biomass impact grasshopper communities.</p>
 <section id="covariate-effects" class="level4" data-number="3.2.2.1">
 <h4 data-number="3.2.2.1" class="anchored" data-anchor-id="covariate-effects"><span class="header-section-number">3.2.2.1</span> Covariate effects</h4>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#pull median and 95% BCI out of the summary file:</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>betas <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(sum<span class="sc">$</span>quantiles) <span class="sc">%&gt;%</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">#get parameter names to be a column</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rownames_to_column</span>(<span class="at">var =</span> <span class="st">"parm"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="co">#select only the covariate effect betas</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(<span class="fu">str_detect</span>(parm, <span class="st">"b"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">str_detect</span>(parm, <span class="st">"b0"</span>)) </span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co">#plot these median and 95% BCI values</span></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(betas, <span class="fu">aes</span>(<span class="at">x =</span> <span class="st">`</span><span class="at">50%</span><span class="st">`</span>, <span class="at">y =</span> parm)) <span class="sc">+</span></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="dv">2</span>, <span class="at">alpha =</span> <span class="fl">0.4</span>) <span class="sc">+</span></span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_pointrange</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="st">`</span><span class="at">50%</span><span class="st">`</span>,</span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>                      <span class="at">y =</span> parm, </span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>                      <span class="at">xmin =</span> <span class="st">`</span><span class="at">2.5%</span><span class="st">`</span>,</span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>                      <span class="at">xmax =</span> <span class="st">`</span><span class="at">97.5%</span><span class="st">`</span>),</span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>                  <span class="at">size =</span> <span class="fl">0.4</span>) <span class="sc">+</span></span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_discrete</span>(<span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Kelp biomass"</span>, <span class="st">"Temperature"</span>)) <span class="sc">+</span> </span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Covariate effect </span><span class="sc">\n</span><span class="st"> (Median and 95% BCI)"</span>,</span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">""</span>) <span class="sc">+</span></span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(<span class="fu">theme_bw</span>())</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co">#pull median and 95% BCI out of the summary file:</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>betas <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(sum<span class="sc">$</span>quantiles) <span class="sc">%&gt;%</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">#get parameter names to be a column</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rownames_to_column</span>(<span class="at">var =</span> <span class="st">"parm"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="co">#select only the covariate effect betas</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(<span class="fu">str_detect</span>(parm, <span class="st">"b"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">str_detect</span>(parm, <span class="st">"b0"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">str_detect</span>(parm, <span class="st">"web"</span>))</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co">#plot these median and 95% BCI values</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(betas, <span class="fu">aes</span>(<span class="at">x =</span> <span class="st">`</span><span class="at">50%</span><span class="st">`</span>, <span class="at">y =</span> parm)) <span class="sc">+</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="dv">2</span>, <span class="at">alpha =</span> <span class="fl">0.4</span>) <span class="sc">+</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_pointrange</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="st">`</span><span class="at">50%</span><span class="st">`</span>,</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>                      <span class="at">y =</span> parm, </span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>                      <span class="at">xmin =</span> <span class="st">`</span><span class="at">2.5%</span><span class="st">`</span>,</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>                      <span class="at">xmax =</span> <span class="st">`</span><span class="at">97.5%</span><span class="st">`</span>),</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>                  <span class="at">size =</span> <span class="fl">0.4</span>) <span class="sc">+</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_discrete</span>(<span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Temperature"</span>, <span class="st">"Precipitation"</span>,</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>                              <span class="st">'Plant biomass'</span>)) <span class="sc">+</span> </span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Covariate effect </span><span class="sc">\n</span><span class="st"> (Median and 95% BCI)"</span>,</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">""</span>) <span class="sc">+</span></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="03_community-stability-environment_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<p>This figure suggests that there is a clear effect of temperature, but not plant biomass, on Bray-Curtis dissimilarity. Higher temperatures lead to higher community change. We can then look at which seasons drive this temperature effect:</p>
+<p>This figure suggests that there is a clear effect of all three covariates on Bray-Curtis dissimilarity. Higher temperatures and plant biomass lead to higher community change; higher precipitation leads to lower community change. We can then look at which seasons drive these effects:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#pull the median and 95% BCI weights for temperature out of the model summary file</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>fish_tweights <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(sum<span class="sc">$</span>quantiles) <span class="sc">%&gt;%</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rownames_to_column</span>(<span class="at">var =</span> <span class="st">"parm"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">str_detect</span>(parm, <span class="st">"wB"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="co">#indicate which type of season they're in</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">season =</span> <span class="fu">case_when</span>(parm <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"wB[1]"</span>, <span class="st">"wB[3]"</span>, <span class="st">"wB[5]"</span>,</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>                                        <span class="st">'wB[7]'</span>, <span class="st">'wB[9]'</span>,<span class="st">'wB[11]'</span>) <span class="sc">~</span> <span class="st">"Warm"</span>,</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>                            parm <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"wB[2]"</span>, <span class="st">"wB[4]"</span>, <span class="st">'wB[6]'</span>,</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>                                        <span class="st">'wB[8]'</span>, <span class="st">'wB[10]'</span>) <span class="sc">~</span> <span class="st">"Cold"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="co">#get the years into the past for each of these seasons</span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">year =</span> <span class="fu">case_when</span>(parm <span class="sc">==</span> <span class="st">"wB[1]"</span> <span class="sc">~</span> <span class="dv">0</span>,</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>                          parm <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"wB[2]"</span>, <span class="st">'wB[3]'</span>) <span class="sc">~</span> <span class="dv">1</span>,</span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>                          parm <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">'wB[4]'</span>, <span class="st">'wB[5]'</span>) <span class="sc">~</span> <span class="dv">2</span>,</span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>                          parm <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"wB[6]"</span>, <span class="st">'wB[7]'</span>) <span class="sc">~</span> <span class="dv">3</span>,</span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>                          parm <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"wB[8]"</span>, <span class="st">'wB[9]'</span>) <span class="sc">~</span> <span class="dv">4</span>,</span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>                          parm <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"wB[10]"</span>, <span class="st">'wB[11]'</span>) <span class="sc">~</span> <span class="dv">5</span>,</span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>                          <span class="cn">TRUE</span> <span class="sc">~</span> <span class="cn">NA_real_</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">complete</span>(season, year) </span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="co">#indicate colors for seasons</span></span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>warmcol <span class="ot">&lt;-</span> <span class="st">'#d8b365'</span></span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>coldcol <span class="ot">&lt;-</span> <span class="st">'#5ab4ac'</span></span>
-<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a><span class="co">#plot these median and 95% BCI values. </span></span>
-<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>fish_tweights <span class="sc">%&gt;%</span></span>
-<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">y =</span> <span class="st">`</span><span class="at">50%</span><span class="st">`</span>, <span class="at">color =</span> season, <span class="at">shape =</span> season)) <span class="sc">+</span></span>
-<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">11</span>, <span class="at">linetype =</span> <span class="dv">2</span>, <span class="at">linewidth =</span> <span class="fl">0.1</span>) <span class="sc">+</span></span>
-<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_pointrange</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> <span class="st">`</span><span class="at">2.5%</span><span class="st">`</span>, <span class="at">ymax =</span> <span class="st">`</span><span class="at">97.5%</span><span class="st">`</span>),</span>
-<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>                  <span class="at">position =</span> <span class="fu">position_dodge</span>(<span class="at">width =</span> <span class="fl">0.5</span>), <span class="at">size =</span> <span class="fl">0.4</span>) <span class="sc">+</span></span>
-<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>)) <span class="sc">+</span></span>
-<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Warm"</span> <span class="ot">=</span> warmcol, <span class="st">"Cold"</span> <span class="ot">=</span> coldcol),</span>
-<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>                     <span class="at">breaks =</span> <span class="fu">c</span>(<span class="st">"Warm"</span>, <span class="st">"Cold"</span>)) <span class="sc">+</span></span>
-<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_shape_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Warm"</span> <span class="ot">=</span> <span class="dv">17</span>, <span class="st">"Cold"</span> <span class="ot">=</span> <span class="dv">16</span>),</span>
-<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>                     <span class="at">breaks =</span> <span class="fu">c</span>(<span class="st">"Warm"</span>, <span class="st">"Cold"</span>)) <span class="sc">+</span></span>
-<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Years into the past"</span>,</span>
-<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Importance weight </span><span class="sc">\n</span><span class="st"> (Median and 95% BCI)"</span>,</span>
-<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>       <span class="at">shape =</span> <span class="st">""</span>, <span class="at">color =</span> <span class="st">""</span>) <span class="sc">+</span></span>
-<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="fu">c</span>(<span class="fl">0.92</span>, <span class="fl">1.1</span>)) <span class="sc">+</span></span>
-<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>hopper_weights <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(sum<span class="sc">$</span>quantiles) <span class="sc">%&gt;%</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rownames_to_column</span>(<span class="at">var =</span> <span class="st">"par"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">str_detect</span>(par, <span class="st">"w"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">str_detect</span>(par, <span class="st">"cumm"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">str_detect</span>(par, <span class="st">"b0.web"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">str_detect</span>(par, <span class="st">"sig.web"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">lag =</span> <span class="fu">str_sub</span>(par, <span class="dv">4</span>, (<span class="fu">nchar</span>(par)<span class="sc">-</span><span class="dv">1</span>))) <span class="sc">%&gt;%</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">covariate =</span> <span class="fu">case_when</span>(<span class="fu">str_detect</span>(par, <span class="st">"wA"</span>) <span class="sc">~</span> <span class="st">"Temperature"</span>,</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>                               <span class="fu">str_detect</span>(par, <span class="st">"wB"</span>) <span class="sc">~</span> <span class="st">"Precipitation"</span>,</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>                               <span class="fu">str_detect</span>(par, <span class="st">"wC"</span>) <span class="sc">~</span> <span class="st">"Plant biomass"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(lag, covariate, <span class="st">`</span><span class="at">2.5%</span><span class="st">`</span>, <span class="st">`</span><span class="at">50%</span><span class="st">`</span>, <span class="st">`</span><span class="at">97.5%</span><span class="st">`</span>)</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>hop_weight_plot1 <span class="ot">&lt;-</span> hopper_weights <span class="sc">%&gt;%</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(covariate <span class="sc">==</span> <span class="st">"Plant biomass"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">lag =</span> <span class="fu">factor</span>(lag, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"1"</span>, <span class="st">"2"</span>, </span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>                                        <span class="st">"3"</span>, <span class="st">"4"</span>, <span class="st">"5"</span>,</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>                                        <span class="st">"6"</span>, <span class="st">"7"</span>, <span class="st">"8"</span>,</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>                                        <span class="st">"9"</span>, <span class="st">"10"</span>,</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>                                        <span class="st">"11"</span>))) <span class="sc">%&gt;%</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> lag, <span class="at">y =</span> <span class="st">`</span><span class="at">50%</span><span class="st">`</span>)) <span class="sc">+</span></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">11</span>, <span class="at">linetype =</span> <span class="dv">2</span>, <span class="at">alpha =</span> <span class="fl">0.4</span>) <span class="sc">+</span></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_pointrange</span>(<span class="fu">aes</span>(<span class="at">x =</span> lag, </span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>                        <span class="at">y =</span> <span class="st">`</span><span class="at">50%</span><span class="st">`</span>,</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>                        <span class="at">ymin =</span> <span class="st">`</span><span class="at">2.5%</span><span class="st">`</span>,</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>                        <span class="at">ymax =</span> <span class="st">`</span><span class="at">97.5%</span><span class="st">`</span>),</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>                    <span class="at">position=</span><span class="fu">position_dodge</span>(<span class="at">width=</span><span class="fl">0.5</span>),</span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>                    <span class="at">size =</span> <span class="fl">0.4</span>) <span class="sc">+</span></span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>    <span class="fu">facet_grid</span>(<span class="sc">~</span>covariate)<span class="sc">+</span></span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x=</span> <span class="st">"Seasons into past"</span>,</span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>         <span class="at">y =</span> <span class="st">"Importance weight</span><span class="sc">\n</span><span class="st">(median and 95% BCI)"</span>)</span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>hop_weight_plot2 <span class="ot">&lt;-</span> hopper_weights <span class="sc">%&gt;%</span></span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(covariate <span class="sc">!=</span> <span class="st">"Plant biomass"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">lag =</span> <span class="fu">factor</span>(lag, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"1"</span>, <span class="st">"2"</span>, </span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>                                        <span class="st">"3"</span>, <span class="st">"4"</span>, <span class="st">"5"</span>,</span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>                                        <span class="st">"6"</span>))) <span class="sc">%&gt;%</span></span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> lag, <span class="at">y =</span> <span class="st">`</span><span class="at">50%</span><span class="st">`</span>)) <span class="sc">+</span></span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">6</span>, <span class="at">linetype =</span> <span class="dv">2</span>, <span class="at">alpha =</span> <span class="fl">0.4</span>) <span class="sc">+</span></span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_pointrange</span>(<span class="fu">aes</span>(<span class="at">x =</span> lag, </span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a>                        <span class="at">y =</span> <span class="st">`</span><span class="at">50%</span><span class="st">`</span>,</span>
+<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a>                        <span class="at">ymin =</span> <span class="st">`</span><span class="at">2.5%</span><span class="st">`</span>,</span>
+<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a>                        <span class="at">ymax =</span> <span class="st">`</span><span class="at">97.5%</span><span class="st">`</span>),</span>
+<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a>                    <span class="at">position=</span><span class="fu">position_dodge</span>(<span class="at">width=</span><span class="fl">0.5</span>),</span>
+<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a>                    <span class="at">size =</span> <span class="fl">0.4</span>) <span class="sc">+</span></span>
+<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a>    <span class="fu">facet_grid</span>(<span class="sc">~</span>covariate)<span class="sc">+</span></span>
+<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x=</span> <span class="st">"Seasons into past"</span>,</span>
+<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a>         <span class="at">y =</span> <span class="st">"Importance weight</span><span class="sc">\n</span><span class="st">(median and 95% BCI)"</span>) <span class="sc">+</span></span>
+<span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.title.y =</span> <span class="fu">element_blank</span>())</span>
+<span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-51"><a href="#cb7-51" aria-hidden="true" tabindex="-1"></a>hop_weight_plot1 <span class="sc">+</span>hop_weight_plot2 <span class="sc">+</span></span>
+<span id="cb7-52"><a href="#cb7-52" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_layout</span>(<span class="at">widths =</span> <span class="fu">c</span>(<span class="fl">1.5</span>,<span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="03_community-stability-environment_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<p>The dashed line indicates the values of importance weights if they were all equal (their prior weights). Any values clearly above this line indicate more important seasons for the temperature effect. There is a fairly clear effect of the previous cold season on community change, with less but still slight effects of the current warm season and every other cold season in the past. This figure suggests that <strong>when the previous cold season is relatively warm, there is more community change</strong>.</p>
+<p>The dashed line indicates the values of importance weights if they were all equal (their prior weights). Any values clearly above this line indicate more important seasons. For plant biomass, we can see that there aren’t any clearly more important seasons, though some suggestion that more current seasons and seasons 2 years ago may be more important. For precipitation, it appears that this season is most important, but there may be a longer temporal signal if we added more time lags (<strong>when the current “wet” season is more wet, there is less community change</strong>). For temperature, last “warm” season (the season before the current one) is most important (<strong>when the previous warm season is warmer, there is more community change</strong>).</p>
 </section>
 </section>
 </section>

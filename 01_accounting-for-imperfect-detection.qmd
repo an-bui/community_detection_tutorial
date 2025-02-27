@@ -258,11 +258,11 @@ You can find all of these, along with the data simulation and tidy version of th
 
 #### The model file
 
-You will need to provide a path to the model file (which is its own R script, written in JAGS/BUGS language, so it won't actually run in R). You can find ours [here](https://github.com/an-bui/community_detection_tutorial/blob/main/tutorials/MSAM/code/MSAM_model.R). You will see that we define the path to this model in our model running script below.
+You will need to provide a path to the model file (which is its own R script, written in JAGS/BUGS language, so it won't actually run in R). You can find ours [here](https://github.com/an-bui/community_detection_tutorial/blob/main/tutorials/01_imperfect_detect/code/MSAM_model.R). You will see that we define the path to this model in our model running script below.
 
 #### The data list
 
-To run the model, we will need to provide JAGS with a data list, which you can find [here](https://github.com/an-bui/community_detection_tutorial/tree/main/tutorials/MSAM/data/model_inputs). We have code on how to prepare the data list [here](https://github.com/an-bui/community_detection_tutorial/blob/main/tutorials/MSAM/code/MSAM_data_simulation.R).
+To run the model, we will need to provide JAGS with a data list, which you can find [here](https://github.com/an-bui/community_detection_tutorial/tree/main/tutorials/01_imperfect_detect/data/model_inputs). We have code on how to prepare the data list [here](https://github.com/an-bui/community_detection_tutorial/blob/main/tutorials/01_imperfect_detect/code/MSAM_data_simulation.R).
 
 ```{r, include=FALSE}
 # Load packages -----------------------------------------------------------
@@ -281,7 +281,7 @@ for(i in package.list){library(i, character.only = T)}
 
 ```{r}
 data_list <- readRDS(here('tutorials',
-                          "MSAM",
+                          "01_imperfect_detect",
                           'data',
                           'model_inputs',
                           'MSAM_data_list.RDS'))
@@ -293,7 +293,7 @@ As you can see, this data list includes indexing numbers, vectors, matrices, and
 
 #### The script to run the model
 
-We'll run the model using the `jagsUI` wrapper package. You can find this script [here](https://github.com/an-bui/community_detection_tutorial/blob/main/tutorials/MSAM/code/MSAM_wrapper_script.R), and the general code to run a JAGS model is provided here:
+We'll run the model using the `jagsUI` wrapper package. You can find this script [here](https://github.com/an-bui/community_detection_tutorial/blob/main/tutorials/01_imperfect_detect/code/MSAM_wrapper_script.R), and the general code to run a JAGS model is provided here:
 
 ```{r, eval=FALSE}
 
@@ -315,7 +315,7 @@ for(i in package.list){library(i, character.only = T)}
 # Load data -----------------------------------------------------------
 
 data_list <- readRDS(here('tutorials',
-                          "MSAM",
+                          "01_imperfect_detect",
                           'data',
                           'model_inputs',
                           'MSAM_data_list.RDS'))
@@ -324,7 +324,7 @@ data_list <- readRDS(here('tutorials',
 
 #The model file is here:
 model_file <- here('tutorials',
-                   "MSAM",
+                   "01_imperfect_detect",
                    'code',
                    'MSAM_model.R')
 
@@ -349,7 +349,7 @@ parameters <- c('b0.star',
 #this was also generated when we simulated data - it aids in 
 #convergence when we have known values
 inits_list <- readRDS(here('tutorials',
-                           "MSAM",
+                           "01_imperfect_detect",
                            'data',
                            "model_inputs",
                            'MSAM_inits_list.RDS'))

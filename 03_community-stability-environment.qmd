@@ -79,31 +79,31 @@ model{
     #site random effect and the weighted antecedent effects of two covariates,
     #plant biomass and temperature
       logit(mu[i]) <- b0.site[Site.ID[i]] +
-        b[1]*AntPlant[i] +
-        b[2]*AntTemp[i]
+        b[1]*AntCov1[i] +
+        b[2]*AntCov2[i]
       
       #-------------------------------------## 
       # SAM summing ###
       #-------------------------------------##
       
       #summing the antecedent values
-      AntPlant[i] <- sum(PlantTemp[i,]) #summing across the total number of antecedent years
-      AntTemp[i] <- sum(TempTemp[i,]) #summing across the total num of antecedent months
+      AntCov1[i] <- sum(Cov1Temp[i,]) #summing across the total number of antecedent years
+      AntCov2[i] <- sum(Cov2Temp[i,]) #summing across the total num of antecedent months
 
       #Generating each year's weight to sum above
-      for(t in 1:n.plantlag){ #number of time steps we're going back in the past
-        PlantTemp[i,t] <- Plant[i,t]*wA[t] 
+      for(t in 1:n.lag1){ #number of time steps we're going back in the past
+        Cov1Temp[i,t] <- Cov1[i,t]*wA[t] 
       
         #imputing missing data
-        Plant[i,t] ~ dnorm(mu.plant, tau.plant)
+        Cov1[i,t] ~ dnorm(mu.cov1, tau.cov1)
       }
         
       #generating each month's weight to sum above
-      for(t in 1:n.templag){ #number of time steps we're going back in the past
-        TempTemp[i,t] <- Temp[i,t]*wB[t] 
+      for(t in 1:n.lag2){ #number of time steps we're going back in the past
+        Cov2Temp[i,t] <- Cov2[i,t]*wB[t] 
 
         #missing data
-        Temp[i,t] ~ dnorm(mu.temp, tau.temp)
+        Cov2[i,t] ~ dnorm(mu.cov2, tau.cov2)
       }
       
       #-------------------------------------## 
@@ -129,14 +129,14 @@ model{
   #Employing "delta trick" to give vector of weights dirichlet priors
   #this is doing the dirichlet in two steps 
   #see Ogle et al. 2015 SAM model paper in Ecology Letters
-  for(t in 1:n.plantlag){ #for the total number of lags
+  for(t in 1:n.lag1){ #for the total number of lags
     #the weights for kelp - getting the weights to sum to 1
     wA[t] <- deltaA[t]/sumA
     #and follow a relatively uninformative gamma prior
     deltaA[t] ~ dgamma(1,1)
     
     #to look at how weights accumulate through time
-    cumm.plantwt[t] <- sum(wA[1:t])
+    cumm.wt1[t] <- sum(wA[1:t])
   }
   
   #Sum of the weights for temp lag
@@ -145,14 +145,14 @@ model{
   #Employing "delta trick" to give vector of weights dirichlet priors
   #this is doing the dirichlet in two steps 
   #see Ogle et al. 2015 SAM model paper in Ecology Letters
-  for(t in 1:n.templag){ #for the total number of lags
+  for(t in 1:n.lag2){ #for the total number of lags
     #the weights for kelp - getting the weights to sum to 1
     wB[t] <- deltaB[t]/sumB
     #and follow a relatively uninformative gamma prior
     deltaB[t] ~ dgamma(1,1)
     
     #to look at cummulative weigths through time
-    cumm.tempwt[t] <- sum(wB[1:t])
+    cumm.wt2[t] <- sum(wB[1:t])
   }
   
   #BETA PRIORS
@@ -180,29 +180,29 @@ model{
 
 
   #MISSING DATA PRIORS
-  mu.plant ~ dunif(-10, 10)
-  sig.plant ~ dunif(0, 20)
-  tau.plant <- pow(sig.plant, -2)
-  mu.temp ~ dunif(-10, 10)
-  sig.temp ~ dunif(0, 20)
-  tau.temp <- pow(sig.temp, -2)
+  mu.cov1 ~ dunif(-10, 10)
+  sig.cov1 ~ dunif(0, 20)
+  tau.cov1 <- pow(sig.cov1, -2)
+  mu.cov2 ~ dunif(-10, 10)
+  sig.cov2 ~ dunif(0, 20)
+  tau.cov2 <- pow(sig.cov2, -2)
   
 }
 ```
 
 ## The model in action
 
-Because we have greatly reduced the dimensionality of our community dataset by deriving a change metric for each site in each year, *y* to the next year *y+1*, the models run efficiently enough that we can use real data for this tutorial. We will demonstrate the utility of this model for the [SBC Fish LTER dataset](https://sbclter.msi.ucsb.edu/data/catalog/package/?package=knb-lter-sbc.17). This LTER site also has yearly data on [kelp biomass](https://sbclter.msi.ucsb.edu/data/catalog/package/?package=knb-lter-sbc.18) and [bottom temperature](https://sbclter.msi.ucsb.edu/data/catalog/package/?package=knb-lter-sbc.13) data from data loggers, which we used as environmental covariates in this model.
+Because we have greatly reduced the dimensionality of our community dataset by deriving a change metric for each site in each year, *y* to the next year *y+1*, the models run efficiently enough that we can use real data for this tutorial. We will demonstrate the utility of this model for the [grasshopper dataset](https://sevlter.unm.edu/grasshopper/) from Sevilleta LTER used in our examples in the paper. This LTER site also has high-resolution information for temperature, precipitation, and plant biomass. 
 
 This dataset has:
 
--   **43 communities (survey transects)** which have change data for
--   **11 - 22 years**, depending on the site and we calculated
+-   **60 communities (survey transects)** which have change data for
+-   **27 years**, and we calculated
 -   **Bray-Curtis dissimilarity** for this count dataset
--   **11 seasons of temperature data** and
--   **6 years of plant data** as covariates
+-   **6 seasons of temperature and precipitation data** and
+-   **11 seasons of plant data** as covariates
 
-In this dataset, we are evaluating how Bray-Curtis dissimilarity through time is shaped by the covariates of kelp biomass and temperature. 
+In this dataset, we are evaluating how Bray-Curtis dissimilarity through time is shaped by the covariates of temperature, precipitation, and plant biomass. 
 
 Again, to run the model in R and JAGS, we will need:
 
@@ -210,23 +210,23 @@ Again, to run the model in R and JAGS, we will need:
 -   The data list
 -   A script to wrap JAGS in R
 
-You can find all of these, along with the tidy data and script used to prep the data list for this example, in the [SAM tutorial folder](https://github.com/an-bui/community_detection_tutorial/tree/main/tutorials/SAM)
+You can find all of these, along with the tidy data and script used to prep the data list for this example, in the [beta regression tutorial folder](https://github.com/an-bui/community_detection_tutorial/tree/main/tutorials/03_beta_regression)
 
 ### Running the model
 
 #### The model file
 
-You will need to provide a path to the model file (which is its own R script, written in JAGS/BUGS language, so it won't actually run in R). You can find ours [here](https://github.com/an-bui/community_detection_tutorial/blob/main/tutorials/SAM/code/SAM_model.R). You will see that we define the path to this model in our model running script below.
+You will need to provide a path to the model file (which is its own R script, written in JAGS/BUGS language, so it won't actually run in R). You can find ours [here](https://github.com/an-bui/community_detection_tutorial/blob/main/tutorials/03_beta_regression/code/grasshopper_betareg_model.R). You will see that we define the path to this model in our model running script below.
 
 #### The data list
 
-To run the model, we will need to provide JAGS with a data list, which you can find [here](https://github.com/an-bui/community_detection_tutorial/tree/main/tutorials/SAM/data/model_inputs). We have code on how to prepare the data list [here](https://github.com/an-bui/community_detection_tutorial/blob/main/tutorials/SAM/code/SAM_data_list_prep.R).
+To run the model, we will need to provide JAGS with a data list, which you can find [here](https://github.com/an-bui/community_detection_tutorial/tree/main/tutorials/03_beta_regression/data/model_inputs). We have code on how to prepare the data list [here](https://github.com/an-bui/community_detection_tutorial/blob/main/tutorials/03_beta_regression/code/grasshopper_betareg_data_prep.R).
 
 ```{r, include=FALSE}
 # Load packages -----------------------------------------------------------
 
 
-package.list <- c("tidyverse", 'here') 
+package.list <- c("tidyverse", 'here', 'patchwork') 
 
 ## Installing them if they aren't already on the computer
 new.packages <- package.list[!(package.list %in% installed.packages()[,"Package"])]
@@ -238,10 +238,10 @@ for(i in package.list){library(i, character.only = T)}
 
 ```{r}
 data_list <- readRDS(here('tutorials',
-                          'SAM',
+                          '03_beta_regression',
                           'data',
                           "model_inputs",
-                          "SAM_input_data.RDS"))
+                          "grasshopper_betareg_input_data_list.RDS"))
 
 str(data_list)
 ```
@@ -250,7 +250,7 @@ As you can see, this data list includes indexing numbers, vectors, matrices, and
 
 #### The script to run the model
 
-Just like with the imperfect detection model, we'll run the model using the `jagsUI` wrapper package. You can find this script [here](https://github.com/an-bui/community_detection_tutorial/blob/main/tutorials/SAM/code/SAM_wrapper_script.R), and the general code to run a JAGS model is provided here:
+Just like with the imperfect detection model, we'll run the model using the `jagsUI` wrapper package. You can find this script [here](https://github.com/an-bui/community_detection_tutorial/blob/main/tutorials/03_beta_regression/code/grasshopper_betareg_wrapper_script.R), and the general code to run a JAGS model is provided here:
 
 ```{r, eval=FALSE}
 # Load packages ---------------------------------------------------------------
@@ -259,7 +259,7 @@ Just like with the imperfect detection model, we'll run the model using the `jag
 package.list <- c("here", "tidyverse", #general packages for data input/manipulation
                   "jagsUI", #to run JAGS models
                   'mcmcplots', #to look at trace plots
-                  "coda") #to evaluate convergence
+                  "coda",'patchwork') #to evaluate convergence
                    
 
 ## Installing them if they aren't already on the computer
@@ -274,23 +274,23 @@ for(i in package.list){library(i, character.only = T)}
 # Load data ---------------------------------------------------------------
 
 data_list <- readRDS(here('tutorials',
-                          'SAM',
+                          '03_beta_regression',
                           'data',
                           "model_inputs",
-                          "SAM_input_data.RDS"))
+                          "grasshopper_betareg_input_data_list.RDS"))
 
 
 # Define model path -------------------------------------------------------
 
 model <- here('tutorials',
-              'SAM',
+              '03_beta_regression',
               'code',
-              'SAM_model.R')
+              'grasshopper_betareg_model.R')
 
 # Parameters to save ------------------------------------------------------
 
 #these parameters we can track to assess convergence
-params <- c('b0.site', #site-level intercepts
+params <- c('b0.web', #site-level intercepts
             'b0', #overall intercept
             'b', #covariate effects
             'wA', #plant biomass weights vector
@@ -306,8 +306,7 @@ mod <- jagsUI::jags(data = data_list,
                     parameters.to.save = params,
                     parallel = TRUE,
                     n.chains = 3,
-                    n.burnin =1500,
-                    n.iter = 5000,
+                    n.iter = 350,
                     DIC = TRUE)
 
 
@@ -329,27 +328,29 @@ Once you have a resulting model file (which could be quite large), you can gener
 sum <- summary(mod$samples)
 ```
 
-We can look at estimated values from this summary to assess how plant biomass and temperature impact SBC LTER fish communities.
+This model requires some re-running with initial values, which we have done and provide a summary from the converged model in the tutorial folder. We can look at estimated values from this summary to assess how temperature, precipitation, and plant biomass impact grasshopper communities.
 
 ```{r, include=FALSE}
 sum <- readRDS(here('tutorials',
-                    'SAM',
+                    '03_beta_regression',
                   'data',
                   'model_outputs',
-                  'SAM_model_summary.RDS'))
+                  'grasshopper_betareg_summary.RDS'))
 ```
 
 #### Covariate effects
 
 ```{r}
 
+theme_set(theme_bw())
 #pull median and 95% BCI out of the summary file:
 betas <- as.data.frame(sum$quantiles) %>%
   #get parameter names to be a column
     rownames_to_column(var = "parm") %>%
   #select only the covariate effect betas
     filter(str_detect(parm, "b")) %>%
-    filter(!str_detect(parm, "b0")) 
+    filter(!str_detect(parm, "b0")) %>%
+  filter(!str_detect(parm, "web"))
 
 #plot these median and 95% BCI values
 ggplot(betas, aes(x = `50%`, y = parm)) +
@@ -359,58 +360,72 @@ ggplot(betas, aes(x = `50%`, y = parm)) +
                       xmin = `2.5%`,
                       xmax = `97.5%`),
                   size = 0.4) +
-  scale_y_discrete(labels = c("Kelp biomass", "Temperature")) + 
+  scale_y_discrete(labels = c("Temperature", "Precipitation",
+                              'Plant biomass')) + 
   labs(x = "Covariate effect \n (Median and 95% BCI)",
        y = "") +
   theme_bw()
 ```
 
-This figure suggests that there is a clear effect of temperature, but not plant biomass, on Bray-Curtis dissimilarity. Higher temperatures lead to higher community change. We can then look at which seasons drive this temperature effect:
+This figure suggests that there is a clear effect of all three covariates on Bray-Curtis dissimilarity. Higher temperatures and plant biomass lead to higher community change; higher precipitation leads to lower community change. We can then look at which seasons drive these effects:
 
 ```{r, warning=FALSE}
 
 #pull the median and 95% BCI weights for temperature out of the model summary file
-fish_tweights <- as.data.frame(sum$quantiles) %>%
-  rownames_to_column(var = "parm") %>%
-  filter(str_detect(parm, "wB")) %>%
-  #indicate which type of season they're in
-  mutate(season = case_when(parm %in% c("wB[1]", "wB[3]", "wB[5]",
-                                        'wB[7]', 'wB[9]','wB[11]') ~ "Warm",
-                            parm %in% c("wB[2]", "wB[4]", 'wB[6]',
-                                        'wB[8]', 'wB[10]') ~ "Cold")) %>%
-  #get the years into the past for each of these seasons
-  mutate(year = case_when(parm == "wB[1]" ~ 0,
-                          parm %in% c("wB[2]", 'wB[3]') ~ 1,
-                          parm %in% c('wB[4]', 'wB[5]') ~ 2,
-                          parm %in% c("wB[6]", 'wB[7]') ~ 3,
-                          parm %in% c("wB[8]", 'wB[9]') ~ 4,
-                          parm %in% c("wB[10]", 'wB[11]') ~ 5,
-                          TRUE ~ NA_real_)) %>% 
-  complete(season, year) 
+hopper_weights <- as.data.frame(sum$quantiles) %>%
+  rownames_to_column(var = "par") %>%
+  filter(str_detect(par, "w")) %>%
+  filter(!str_detect(par, "cumm")) %>%
+  filter(!str_detect(par, "b0.web")) %>%
+  filter(!str_detect(par, "sig.web")) %>%
+  mutate(lag = str_sub(par, 4, (nchar(par)-1))) %>%
+  mutate(covariate = case_when(str_detect(par, "wA") ~ "Temperature",
+                               str_detect(par, "wB") ~ "Precipitation",
+                               str_detect(par, "wC") ~ "Plant biomass")) %>%
+  dplyr::select(lag, covariate, `2.5%`, `50%`, `97.5%`)
 
-#indicate colors for seasons
-warmcol <- '#d8b365'
-coldcol <- '#5ab4ac'
+hop_weight_plot1 <- hopper_weights %>%
+    filter(covariate == "Plant biomass") %>%
+    mutate(lag = factor(lag, levels = c("1", "2", 
+                                        "3", "4", "5",
+                                        "6", "7", "8",
+                                        "9", "10",
+                                        "11"))) %>%
+    ggplot(aes(x = lag, y = `50%`)) +
+    geom_hline(yintercept = 1/11, linetype = 2, alpha = 0.4) +
+    geom_pointrange(aes(x = lag, 
+                        y = `50%`,
+                        ymin = `2.5%`,
+                        ymax = `97.5%`),
+                    position=position_dodge(width=0.5),
+                    size = 0.4) +
+    facet_grid(~covariate)+
+    labs(x= "Seasons into past",
+         y = "Importance weight\n(median and 95% BCI)")
 
-#plot these median and 95% BCI values. 
-fish_tweights %>%
-  ggplot(aes(x = year, y = `50%`, color = season, shape = season)) +
-  geom_hline(yintercept = 1/11, linetype = 2, linewidth = 0.1) +
-  geom_pointrange(aes(ymin = `2.5%`, ymax = `97.5%`),
-                  position = position_dodge(width = 0.5), size = 0.4) +
-  scale_x_continuous(breaks = c(0, 1, 2, 3, 4, 5)) +
-  scale_color_manual(values = c("Warm" = warmcol, "Cold" = coldcol),
-                     breaks = c("Warm", "Cold")) +
-  scale_shape_manual(values = c("Warm" = 17, "Cold" = 16),
-                     breaks = c("Warm", "Cold")) +
-  labs(x = "Years into the past",
-       y = "Importance weight \n (Median and 95% BCI)",
-       shape = "", color = "") +
-  theme(legend.position = c(0.92, 1.1)) +
-  theme_bw()
+hop_weight_plot2 <- hopper_weights %>%
+    filter(covariate != "Plant biomass") %>%
+    mutate(lag = factor(lag, levels = c("1", "2", 
+                                        "3", "4", "5",
+                                        "6"))) %>%
+    ggplot(aes(x = lag, y = `50%`)) +
+    geom_hline(yintercept = 1/6, linetype = 2, alpha = 0.4) +
+    geom_pointrange(aes(x = lag, 
+                        y = `50%`,
+                        ymin = `2.5%`,
+                        ymax = `97.5%`),
+                    position=position_dodge(width=0.5),
+                    size = 0.4) +
+    facet_grid(~covariate)+
+    labs(x= "Seasons into past",
+         y = "Importance weight\n(median and 95% BCI)") +
+  theme(axis.title.y = element_blank())
+
+hop_weight_plot1 +hop_weight_plot2 +
+  plot_layout(widths = c(1.5,2))
 ```
 
-The dashed line indicates the values of importance weights if they were all equal (their prior weights). Any values clearly above this line indicate more important seasons for the temperature effect. There is a fairly clear effect of the previous cold season on community change, with less but still slight effects of the current warm season and every other cold season in the past. This figure suggests that **when the previous cold season is relatively warm, there is more community change**.
+The dashed line indicates the values of importance weights if they were all equal (their prior weights). Any values clearly above this line indicate more important seasons. For plant biomass, we can see that there aren't any clearly more important seasons, though some suggestion that more current seasons and seasons 2 years ago may be more important. For precipitation, it appears that this season is most important, but there may be a longer temporal signal if we added more time lags (**when the current "wet" season is more wet, there is less community change**). For temperature, last "warm" season (the season before the current one) is most important (**when the previous warm season is warmer, there is more community change**). 
 
 ## Wrapping up
 

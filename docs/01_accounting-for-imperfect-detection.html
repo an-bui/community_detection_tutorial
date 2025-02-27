@@ -454,14 +454,14 @@ div.csl-indent {
 <h3 data-number="1.2.1" class="anchored" data-anchor-id="running-the-model"><span class="header-section-number">1.2.1</span> Running the model</h3>
 <section id="the-model-file" class="level4" data-number="1.2.1.1">
 <h4 data-number="1.2.1.1" class="anchored" data-anchor-id="the-model-file"><span class="header-section-number">1.2.1.1</span> The model file</h4>
-<p>You will need to provide a path to the model file (which is its own R script, written in JAGS/BUGS language, so it won’t actually run in R). You can find ours <a href="https://github.com/an-bui/community_detection_tutorial/blob/main/tutorials/MSAM/code/MSAM_model.R">here</a>. You will see that we define the path to this model in our model running script below.</p>
+<p>You will need to provide a path to the model file (which is its own R script, written in JAGS/BUGS language, so it won’t actually run in R). You can find ours <a href="https://github.com/an-bui/community_detection_tutorial/blob/main/tutorials/01_imperfect_detect/code/MSAM_model.R">here</a>. You will see that we define the path to this model in our model running script below.</p>
 </section>
 <section id="the-data-list" class="level4" data-number="1.2.1.2">
 <h4 data-number="1.2.1.2" class="anchored" data-anchor-id="the-data-list"><span class="header-section-number">1.2.1.2</span> The data list</h4>
-<p>To run the model, we will need to provide JAGS with a data list, which you can find <a href="https://github.com/an-bui/community_detection_tutorial/tree/main/tutorials/MSAM/data/model_inputs">here</a>. We have code on how to prepare the data list <a href="https://github.com/an-bui/community_detection_tutorial/blob/main/tutorials/MSAM/code/MSAM_data_simulation.R">here</a>.</p>
+<p>To run the model, we will need to provide JAGS with a data list, which you can find <a href="https://github.com/an-bui/community_detection_tutorial/tree/main/tutorials/01_imperfect_detect/data/model_inputs">here</a>. We have code on how to prepare the data list <a href="https://github.com/an-bui/community_detection_tutorial/blob/main/tutorials/01_imperfect_detect/code/MSAM_data_simulation.R">here</a>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>data_list <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="fu">here</span>(<span class="st">'tutorials'</span>,</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>                          <span class="st">"MSAM"</span>,</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>                          <span class="st">"01_imperfect_detect"</span>,</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>                          <span class="st">'data'</span>,</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>                          <span class="st">'model_inputs'</span>,</span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>                          <span class="st">'MSAM_data_list.RDS'</span>))</span>
@@ -486,7 +486,7 @@ div.csl-indent {
 </section>
 <section id="the-script-to-run-the-model" class="level4" data-number="1.2.1.3">
 <h4 data-number="1.2.1.3" class="anchored" data-anchor-id="the-script-to-run-the-model"><span class="header-section-number">1.2.1.3</span> The script to run the model</h4>
-<p>We’ll run the model using the <code>jagsUI</code> wrapper package. You can find this script <a href="https://github.com/an-bui/community_detection_tutorial/blob/main/tutorials/MSAM/code/MSAM_wrapper_script.R">here</a>, and the general code to run a JAGS model is provided here:</p>
+<p>We’ll run the model using the <code>jagsUI</code> wrapper package. You can find this script <a href="https://github.com/an-bui/community_detection_tutorial/blob/main/tutorials/01_imperfect_detect/code/MSAM_wrapper_script.R">here</a>, and the general code to run a JAGS model is provided here:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load packages -----------------------------------------------------------</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -506,7 +506,7 @@ div.csl-indent {
 <span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Load data -----------------------------------------------------------</span></span>
 <span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>data_list <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="fu">here</span>(<span class="st">'tutorials'</span>,</span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>                          <span class="st">"MSAM"</span>,</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>                          <span class="st">"01_imperfect_detect"</span>,</span>
 <span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>                          <span class="st">'data'</span>,</span>
 <span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>                          <span class="st">'model_inputs'</span>,</span>
 <span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>                          <span class="st">'MSAM_data_list.RDS'</span>))</span>
@@ -515,7 +515,7 @@ div.csl-indent {
 <span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a><span class="co">#The model file is here:</span></span>
 <span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>model_file <span class="ot">&lt;-</span> <span class="fu">here</span>(<span class="st">'tutorials'</span>,</span>
-<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>                   <span class="st">"MSAM"</span>,</span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>                   <span class="st">"01_imperfect_detect"</span>,</span>
 <span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>                   <span class="st">'code'</span>,</span>
 <span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>                   <span class="st">'MSAM_model.R'</span>)</span>
 <span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a></span>
@@ -540,7 +540,7 @@ div.csl-indent {
 <span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a><span class="co">#this was also generated when we simulated data - it aids in </span></span>
 <span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a><span class="co">#convergence when we have known values</span></span>
 <span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a>inits_list <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="fu">here</span>(<span class="st">'tutorials'</span>,</span>
-<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a>                           <span class="st">"MSAM"</span>,</span>
+<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a>                           <span class="st">"01_imperfect_detect"</span>,</span>
 <span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a>                           <span class="st">'data'</span>,</span>
 <span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a>                           <span class="st">"model_inputs"</span>,</span>
 <span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a>                           <span class="st">'MSAM_inits_list.RDS'</span>))</span>
